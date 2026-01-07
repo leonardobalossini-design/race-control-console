@@ -145,41 +145,21 @@
     </div><!-- Hero Content -->
     <div id="heroContent" style="position: relative; z-index: 10; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 1.5rem; will-change: opacity, transform;">
      <div style="text-align: center; max-width: 64rem;"><!-- FMI Logo with Checkered Flag -->
-      <div style="margin-bottom: 3rem; display: flex; justify-content: center; position: relative;">
-       <svg width="160" height="160" viewbox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 20px 60px rgba(34, 211, 238, 0.6));"><!-- Outer Circle --> <circle cx="60" cy="60" r="57" stroke="url(#gradientBorder)" stroke-width="4" fill="rgba(10, 15, 26, 0.9)" /> <!-- Checkered Pattern Background --> <g opacity="0.2">
-         <rect x="30" y="30" width="10" height="10" fill="#22D3EE" />
-         <rect x="40" y="40" width="10" height="10" fill="#22D3EE" />
-         <rect x="50" y="30" width="10" height="10" fill="#22D3EE" />
-         <rect x="60" y="40" width="10" height="10" fill="#22D3EE" />
-         <rect x="70" y="30" width="10" height="10" fill="#22D3EE" />
-         <rect x="80" y="40" width="10" height="10" fill="#22D3EE" />
-         <rect x="30" y="50" width="10" height="10" fill="#22D3EE" />
-         <rect x="40" y="60" width="10" height="10" fill="#22D3EE" />
-         <rect x="50" y="50" width="10" height="10" fill="#22D3EE" />
-         <rect x="60" y="60" width="10" height="10" fill="#22D3EE" />
-         <rect x="70" y="50" width="10" height="10" fill="#22D3EE" />
-         <rect x="80" y="60" width="10" height="10" fill="#22D3EE" />
-         <rect x="30" y="70" width="10" height="10" fill="#22D3EE" />
-         <rect x="40" y="80" width="10" height="10" fill="#22D3EE" />
-         <rect x="50" y="70" width="10" height="10" fill="#22D3EE" />
-         <rect x="60" y="80" width="10" height="10" fill="#22D3EE" />
-         <rect x="70" y="70" width="10" height="10" fill="#22D3EE" />
-         <rect x="80" y="80" width="10" height="10" fill="#22D3EE" />
-        </g> <!-- FMI Logo Letter --> <text x="60" y="75" font-family="Sora, sans-serif" font-size="48" font-weight="900" fill="#22D3EE" text-anchor="middle" letter-spacing="-2">
-         FMI
-        </text> <!-- Inner Circles --> <circle cx="60" cy="60" r="52" stroke="#6366F1" stroke-width="1" opacity="0.5" /> <circle cx="60" cy="60" r="46" stroke="#22D3EE" stroke-width="0.5" opacity="0.7" /> <!-- Gradient Definition --> <defs>
-         <lineargradient id="gradientBorder" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#22D3EE;stop-opacity:1" />
-          <stop offset="50%" style="stop-color:#6366F1;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#22D3EE;stop-opacity:1" />
-         </lineargradient>
-        </defs>
-       </svg><!-- Rotating Ring Animation -->
-       <svg width="200" height="200" viewbox="0 0 200 200" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="100" r="90" stroke="#22D3EE" stroke-width="1" fill="none" opacity="0.3" stroke-dasharray="10 10">
-         <animatetransform attributename="transform" type="rotate" from="0 100 100" to="360 100 100" dur="20s" repeatcount="indefinite" />
-        </circle>
-       </svg>
-      </div><!-- Main Title -->
+      <!-- FMI Logo -->
+<div style="margin-bottom: 3rem; display: flex; justify-content: center; position: relative;">
+  <img
+    src="./fmi-logo.png"
+    alt="FMI Logo"
+    style="
+      width: 160px;
+      height: 160px;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 60px rgba(34, 211, 238, 0.6));
+      transform: translateZ(0);
+      will-change: transform;
+    "
+  />
+</div><!-- Main Title -->
       <h1 style="font-family: 'Sora', sans-serif; font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; color: #ffffff; margin-bottom: 1.5rem; line-height: 1.05; letter-spacing: -0.03em; text-shadow: 0 0 80px rgba(255, 255, 255, 0.4), 0 6px 30px rgba(0, 0, 0, 0.9), 0 2px 8px rgba(0, 0, 0, 1);">Race Control Console</h1><!-- Subtitle -->
       <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 8rem;">
        <p style="font-family: 'IBM Plex Sans', sans-serif; font-size: clamp(1rem, 2.5vw, 1.5rem); font-weight: 600; color: #cbd5e1; margin: 0; line-height: 1.4; letter-spacing: 0.02em; text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), 0 2px 6px rgba(0, 0, 0, 1);">Operational Decision Interface</p>
