@@ -675,6 +675,199 @@
     </div>
    </div>
   </div>
+   <div id="guideView" class="hidden p-8 animate-fade-in">
+      
+      <div class="max-w-5xl mx-auto mb-10">
+        <h1 class="text-4xl font-bold text-white mb-2" style="font-family: 'Sora', sans-serif;">Guida Operativa</h1>
+        <div class="h-1 w-20 bg-gradient-to-r from-cyan-400 to-indigo-500 rounded-full mb-4"></div>
+        <p class="text-slate-400 text-lg">Standard di compilazione e protocolli decisionali per la Race Control Console.</p>
+      </div>
+
+      <div class="max-w-5xl mx-auto space-y-12">
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="rounded-2xl p-6 shadow-xl border" style="background: #0F172A; border-color: #334155;">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-8 h-8 rounded-lg flex items-center justify-center font-bold border" style="background: rgba(99, 102, 241, 0.2); color: #818cf8; border-color: rgba(99, 102, 241, 0.3);">1</span>
+              <h2 class="text-xl font-bold text-white" style="font-family: 'Sora', sans-serif;">Cos'è Race Control Console</h2>
+            </div>
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Non è un blocco appunti. È lo strumento operativo ufficiale per:
+            </p>
+            <ul class="space-y-2 text-slate-400 text-sm">
+              <li class="flex items-start gap-2"><span style="color: #22D3EE;">✔</span> Registrare eventi di gara</li>
+              <li class="flex items-start gap-2"><span style="color: #22D3EE;">✔</span> Documentare incidenti</li>
+              <li class="flex items-start gap-2"><span style="color: #22D3EE;">✔</span> Formalizzare decisioni ufficiali</li>
+            </ul>
+          </div>
+
+          <div class="rounded-2xl p-6 shadow-xl border relative overflow-hidden" style="background: #0F172A; border-color: #334155;">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-8 h-8 rounded-lg flex items-center justify-center font-bold border" style="background: rgba(34, 211, 238, 0.2); color: #22D3EE; border-color: rgba(34, 211, 238, 0.3);">2</span>
+              <h2 class="text-xl font-bold text-white" style="font-family: 'Sora', sans-serif;">Logica del Sistema</h2>
+            </div>
+            <p class="text-slate-300 mb-6">Il flusso dati è rigido e unidirezionale:</p>
+            
+            <div class="flex items-center justify-between p-4 rounded-xl border" style="background: rgba(30, 41, 59, 0.5); border-color: rgba(51, 65, 85, 0.5);">
+              <div class="text-center">
+                <div class="text-xs text-slate-500 uppercase tracking-widest mb-1">Sessione</div>
+                <div class="font-bold text-white">EVENTO</div>
+              </div>
+              <div class="text-slate-600">→</div>
+              <div class="text-center">
+                <div class="text-xs text-slate-500 uppercase tracking-widest mb-1">Fatto</div>
+                <div class="font-bold" style="color: #facc15;">INCIDENTI</div>
+              </div>
+              <div class="text-slate-600">→</div>
+              <div class="text-center">
+                <div class="text-xs text-slate-500 uppercase tracking-widest mb-1">Output</div>
+                <div class="font-bold" style="color: #22D3EE;">DECISIONI</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="rounded-2xl p-8 shadow-2xl border" style="background: #0F172A; border-color: #334155;">
+          <h3 class="text-2xl font-bold mb-6 pb-4 border-b" style="font-family: 'Sora', sans-serif; color: #22D3EE; border-color: #1e293b;">3. EVENT (Dati Sessione)</h3>
+          <div class="grid grid-cols-1 gap-8">
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 border-b pb-6 last:border-0 last:pb-0" style="border-color: rgba(30, 41, 59, 0.5);">
+              <div class="font-mono font-semibold" style="color: #67e8f9;">event_id</div>
+              <div class="md:col-span-3 text-slate-300">
+                <p class="mb-2">Identificatore univoco. <strong>Non va mai modificato.</strong> È la chiave che collega tutto lo storico.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 border-b pb-6 last:border-0 last:pb-0" style="border-color: rgba(30, 41, 59, 0.5);">
+              <div class="font-mono font-semibold" style="color: #67e8f9;">series / season</div>
+              <div class="md:col-span-3 text-slate-300">
+                <p>Campionato (es. CIV, MotoGP) e Anno (es. 2025). Fondamentale per le statistiche incrociate.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 border-b pb-6 last:border-0 last:pb-0" style="border-color: rgba(30, 41, 59, 0.5);">
+              <div class="font-mono font-semibold" style="color: #67e8f9;">event_name</div>
+              <div class="md:col-span-3 text-slate-300">
+                <p class="mb-2">Nome descrittivo completo.</p>
+                <div class="p-2 rounded border-l-2 text-xs font-mono" style="background: #020617; border-color: #22c55e; color: #94a3b8;">
+                  CORRETTO: "CIV 2025 — Round 3 — Vallelunga"
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 border-b pb-6 last:border-0 last:pb-0" style="border-color: rgba(30, 41, 59, 0.5);">
+              <div class="font-mono font-semibold" style="color: #67e8f9;">track_status</div>
+              <div class="md:col-span-3 text-slate-300">
+                <p class="mb-2">Definizione precisa dello stato pista:</p>
+                <ul class="grid grid-cols-2 gap-2 text-sm">
+                  <li><span class="text-white font-semibold">Asciutto:</span> 0% umidità</li>
+                  <li><span class="text-white font-semibold">Umido:</span> Chiazze localizzate</li>
+                  <li><span class="text-white font-semibold">Bagnato:</span> Pista wet</li>
+                  <li><span class="text-white font-semibold">Misto:</span> Condizioni variabili</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="rounded-2xl p-8 shadow-2xl border" style="background: #0F172A; border-color: #334155;">
+          <h3 class="text-2xl font-bold mb-6 pb-4 border-b" style="font-family: 'Sora', sans-serif; color: #facc15; border-color: #1e293b;">4. INCIDENTS (Fatti Osservabili)</h3>
+          <p class="text-slate-400 mb-6 italic">Un incidente è un fatto, non una valutazione.</p>
+
+          <div class="space-y-6">
+            
+            <div class="p-4 rounded-xl border" style="background: rgba(30, 41, 59, 0.3); border-color: #334155;">
+              <div class="flex justify-between items-start mb-2">
+                <span class="font-mono font-bold" style="color: #fde047;">timestamp vs lap</span>
+              </div>
+              <p class="text-slate-300 text-sm">
+                <strong>Timestamp:</strong> Descrizione temporale ("lap 2", "pre-start", "cooldown").<br>
+                <strong>Lap:</strong> Solo il numero puro (es. "2"). Usare entrambi per massima precisione.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h4 class="font-bold text-white mb-2">action_taxonomy</h4>
+                <p class="text-slate-400 text-sm mb-2">Usare SOLO il vocabolario controllato. Non inventare termini.</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="px-2 py-1 rounded text-xs text-slate-500 border" style="background: #020617; border-color: #1e293b;">TRACK_LIMITS</span>
+                  <span class="px-2 py-1 rounded text-xs text-slate-500 border" style="background: #020617; border-color: #1e293b;">COLLISION</span>
+                </div>
+              </div>
+              
+              <div>
+                <h4 class="font-bold text-white mb-2">severity</h4>
+                <p class="text-slate-400 text-sm mb-2">Impatto percepito sull'evento, non la sanzione.</p>
+                <div class="flex gap-2 text-sm text-slate-300">
+                  <span class="px-2 rounded bg-green-900 text-green-300 border border-green-800">LOW</span>
+                  <span class="px-2 rounded bg-yellow-900 text-yellow-300 border border-yellow-800">MEDIUM</span>
+                  <span class="px-2 rounded bg-red-900 text-red-300 border border-red-800">HIGH</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="border-t pt-4" style="border-color: #1e293b;">
+              <h4 class="font-bold text-white mb-2">description_neutral <span class="text-xs ml-2" style="color: #f87171;">(CRITICO)</span></h4>
+              <p class="text-slate-300 text-sm mb-3">Descrivere l'accaduto senza attribuire colpe o intenzioni.</p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-3 rounded border" style="background: rgba(127, 29, 29, 0.2); border-color: rgba(127, 29, 29, 0.5);">
+                  <span class="text-xs font-bold block mb-1" style="color: #f87171;">ERRATO</span>
+                  <span class="text-slate-400 text-sm">"Rossi butta fuori Bianchi apposta alla curva 4."</span>
+                </div>
+                <div class="p-3 rounded border" style="background: rgba(20, 83, 45, 0.2); border-color: rgba(20, 83, 45, 0.5);">
+                  <span class="text-xs font-bold block mb-1" style="color: #4ade80;">CORRETTO</span>
+                  <span class="text-slate-400 text-sm">"Contatto tra Rossi e Bianchi in ingresso curva 4. Bianchi finisce nella ghiaia."</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="rounded-2xl p-8 shadow-2xl border" style="background: #0F172A; border-color: #334155;">
+          <h3 class="text-2xl font-bold mb-6 pb-4 border-b" style="font-family: 'Sora', sans-serif; color: #818cf8; border-color: #1e293b;">5. DECISIONS (Risposta Ufficiale)</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div class="col-span-1">
+              <div class="font-mono font-semibold mb-2" style="color: #a5b4fc;">decision_type</div>
+              <ul class="text-sm text-slate-400 space-y-1">
+                <li><strong class="text-white">PENALTY:</strong> Sanzione</li>
+                <li><strong class="text-white">WARNING:</strong> Richiamo</li>
+                <li><strong class="text-white">NO_ACTION:</strong> N.L.P.</li>
+                <li><strong class="text-white">INFO:</strong> Nota</li>
+              </ul>
+            </div>
+
+            <div class="col-span-2">
+              <div class="font-mono font-semibold mb-2" style="color: #a5b4fc;">confidence_level</div>
+              <p class="text-sm text-slate-300 mb-4">
+                Rappresenta la solidità probatoria e regolamentare della decisione. 
+                Serve per audit futuri e per valutare la qualità del giudizio in condizioni di incertezza.
+              </p>
+              <div class="p-3 rounded border" style="background: #020617; border-color: #1e293b;">
+                <div class="font-mono font-semibold text-xs mb-1" style="color: #a5b4fc;">regulatory_basis</div>
+                <p class="text-slate-500 text-xs italic">Citare sempre l'articolo del regolamento applicato.</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="text-center py-8">
+          <h4 class="text-white font-bold tracking-widest uppercase mb-6 text-sm opacity-50">Principi Fondamentali</h4>
+          <div class="flex flex-wrap justify-center gap-4">
+            <span class="px-4 py-2 rounded-full text-slate-300 text-sm border" style="background: #1e293b; border-color: #334155;">Neutralità</span>
+            <span class="px-4 py-2 rounded-full text-slate-300 text-sm border" style="background: #1e293b; border-color: #334155;">Coerenza</span>
+            <span class="px-4 py-2 rounded-full text-slate-300 text-sm border" style="background: #1e293b; border-color: #334155;">Tracciabilità</span>
+            <span class="px-4 py-2 rounded-full text-slate-300 text-sm border" style="background: #1e293b; border-color: #334155;">Ripetibilità</span>
+          </div>
+        </section>
+
+      </div>
+    </div>
   <script>
     // ========== Hero Scroll Animation ==========
     let rafId = null;
