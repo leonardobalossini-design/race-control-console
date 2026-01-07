@@ -1733,22 +1733,49 @@
       }
     });
 
-    // ========== Initialization ==========
-   // ========== Initialization ==========
+// ========== Initialization ==========
     async function init() {
       document.getElementById('userInfo').textContent = 'User: demo@example.com';
 
       initSidebarToggle();
       
-      // --- NUOVO CODICE: Navigazione Sidebar ---
-      // Quando clicchi su "Console" (C), scorre alla sezione console
-      const navConsoleBtn = document.getElementById('navConsole');
-      if (navConsoleBtn) {
-        navConsoleBtn.addEventListener('click', () => {
-          const consoleSection = document.getElementById('console');
-          if (consoleSection) {
-            consoleSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
+      // --- LOGICA NAVIGAZIONE SIDEBAR ---
+      const consoleSection = document.getElementById('console');
+      const guideSection = document.getElementById('guideView');
+      const appShell = document.getElementById('appShell');
+      
+      const btnConsole = document.getElementById('navConsole');
+      const btnGuide = document.getElementById('navGuide');
+
+      // Click su CONSOLE (C)
+      if (btnConsole) {
+        btnConsole.addEventListener('click', () => {
+          // Mostra Console, Nascondi Guida
+          if(consoleSection) consoleSection.classList.remove('hidden');
+          if(guideSection) guideSection.classList.add('hidden');
+          
+          // Aggiorna stato bottoni (stile)
+          btnConsole.classList.add('active'); 
+          if(btnGuide) btnGuide.classList.remove('active');
+
+          // Scrolla all'inizio del Main Panel
+          if(appShell) appShell.scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+
+      // Click su GUIDA (G)
+      if (btnGuide) {
+        btnGuide.addEventListener('click', () => {
+          // Nascondi Console, Mostra Guida
+          if(consoleSection) consoleSection.classList.add('hidden');
+          if(guideSection) guideSection.classList.remove('hidden');
+
+          // Aggiorna stato bottoni (stile)
+          btnGuide.classList.add('active');
+          if(btnConsole) btnConsole.classList.remove('active');
+          
+          // Scrolla all'inizio del Main Panel
+          if(appShell) appShell.scrollIntoView({ behavior: 'smooth' });
         });
       }
       // -----------------------------------------
