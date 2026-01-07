@@ -869,66 +869,6 @@
 
       </div>
     </div>
-   <div id="newEventModal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-[60] backdrop-blur-sm">
-        <div class="rounded-2xl shadow-2xl max-w-lg w-full mx-4 border border-slate-700" style="background: #0F172A;">
-         <div class="p-8">
-          <div class="flex items-center justify-between mb-6">
-            <h3 class="text-2xl font-bold text-white" style="font-family: 'Sora', sans-serif;">Create New Event</h3>
-            <button onclick="closeNewEventModal()" class="text-slate-400 hover:text-white transition">✕</button>
-          </div>
-          
-          <form id="newEventModalForm" class="space-y-5">
-           
-           <div>
-             <label class="block text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1">Event ID *</label>
-             <input type="text" name="event_id" required 
-                    class="w-full px-4 py-3 text-white rounded-lg focus:ring-2 focus:ring-cyan-400 outline-none transition font-mono border border-slate-700 bg-slate-900" 
-                    placeholder="e.g., CIV25-R01-MISANO">
-             <p class="text-xs text-slate-500 mt-1">Unique identifier. Cannot be changed later.</p>
-           </div>
-
-           <div class="grid grid-cols-2 gap-4">
-             <div>
-               <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Series *</label>
-               <input type="text" name="series" required 
-                      class="w-full px-4 py-2 text-white rounded-lg border border-slate-700 bg-slate-900 focus:border-cyan-400 outline-none" 
-                      placeholder="e.g., CIV">
-             </div>
-             <div>
-               <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Season *</label>
-               <input type="text" name="season" required 
-                      class="w-full px-4 py-2 text-white rounded-lg border border-slate-700 bg-slate-900 focus:border-cyan-400 outline-none" 
-                      placeholder="e.g., 2025">
-             </div>
-           </div>
-
-           <div>
-             <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Event Name *</label>
-             <input type="text" name="event_name" required 
-                    class="w-full px-4 py-2 text-white rounded-lg border border-slate-700 bg-slate-900 focus:border-cyan-400 outline-none" 
-                    placeholder="Full official name">
-           </div>
-
-           <div>
-             <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Location *</label>
-             <input type="text" name="location" required 
-                    class="w-full px-4 py-2 text-white rounded-lg border border-slate-700 bg-slate-900 focus:border-cyan-400 outline-none" 
-                    placeholder="Circuit Name">
-           </div>
-
-           <div class="pt-4 flex gap-3">
-             <button type="submit" class="flex-1 py-3 font-bold rounded-lg text-slate-900 transition hover:brightness-110 shadow-lg" style="background: #22D3EE;">
-               Initialize Event
-             </button>
-             <button type="button" onclick="closeNewEventModal()" class="px-6 py-3 font-bold rounded-lg text-slate-400 hover:text-white border border-slate-700 hover:bg-slate-800 transition">
-               Cancel
-             </button>
-           </div>
-
-          </form>
-         </div>
-        </div>
-       </div>
   <script>
     // ========== Hero Scroll Animation ==========
     let rafId = null;
