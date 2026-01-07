@@ -209,6 +209,34 @@
   font-weight: 700;
   font-size: 12px;
 }
+   /* ===============================
+   Sidebar toggle icon (3 bars)
+   =============================== */
+
+/* Contenitore delle stanghette */
+.sidebar-toggle .bars{
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* STATO DEFAULT → sidebar CHIUSA → stanghette VERTICALI */
+.sidebar-toggle .bar{
+  display: block;
+  width: 2px;
+  height: 18px;
+  border-radius: 999px;
+  background: #CBD5E1;
+  opacity: 0.9;
+  transition: all 0.18s ease;
+}
+
+/* STATO APERTO → stanghette ORIZZONTALI */
+.sidebar-toggle.is-open .bar{
+  width: 18px;
+  height: 2px;
+}
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1364,8 +1392,14 @@ function initSidebarToggle() {
   const toggle = document.getElementById('sidebarToggle');
   if (!sidebar || !toggle) return;
 
+  // stato iniziale (sidebar chiusa)
+  toggle.classList.remove('is-open');
+
   toggle.addEventListener('click', () => {
+    const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+
     sidebar.classList.toggle('sidebar-collapsed');
+    toggle.classList.toggle('is-open', isCollapsed);
   });
 }
     // Run on page load
