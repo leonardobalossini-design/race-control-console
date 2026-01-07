@@ -314,37 +314,64 @@
      </div><!-- Dark Overlay for Text Readability -->
      <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10, 15, 26, 0.4) 0%, rgba(10, 15, 26, 0.75) 50%, rgba(15, 23, 42, 0.95) 100%);"></div>
     </div><!-- Hero Content -->
-    <div id="heroContent" style="position: relative; z-index: 10; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 1.5rem; will-change: opacity, transform;">
-     <div style="text-align: center; max-width: 64rem;"><!-- FMI Logo with Checkered Flag -->
-      <!-- FMI Logo -->
-<div style="margin-bottom: 3rem; display: flex; justify-content: center; position: relative;">
-  <img
-    src="./fmi-logo.png"
-    alt="FMI Logo"
-    style="
-      width: 160px;
-      height: 160px;
-      object-fit: contain;
-      filter: drop-shadow(0 20px 60px rgba(34, 211, 238, 0.6));
-      transform: translateZ(0);
-      will-change: transform;
-    "
-  />
-</div><!-- Main Title -->
-      <h1 style="font-family: 'Sora', sans-serif; font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; color: #ffffff; margin-bottom: 1.5rem; line-height: 1.05; letter-spacing: -0.03em; text-shadow: 0 0 80px rgba(255, 255, 255, 0.4), 0 6px 30px rgba(0, 0, 0, 0.9), 0 2px 8px rgba(0, 0, 0, 1);">Race Control Console</h1><!-- Subtitle -->
-      <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 8rem;">
-       <p style="font-family: 'IBM Plex Sans', sans-serif; font-size: clamp(1rem, 2.5vw, 1.5rem); font-weight: 600; color: #cbd5e1; margin: 0; line-height: 1.4; letter-spacing: 0.02em; text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), 0 2px 6px rgba(0, 0, 0, 1);">Operational Decision Interface</p>
-      </div><!-- Scroll Hint -->
-      <div id="scrollHint" style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem; animation: bounceHint 2s infinite;">
-       <div style="width: 3px; height: 60px; background: linear-gradient(180deg, transparent 0%, #22D3EE 50%, transparent 100%); box-shadow: 0 0 20px rgba(34, 211, 238, 0.6);"></div>
-       <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;"><span style="font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 800; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);">Scroll Down</span>
-        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.6));"><polyline points="7 13 12 18 17 13"></polyline> <polyline points="7 6 12 11 17 6"></polyline>
-        </svg>
-       </div>
+   <div id="heroContent" style="position: relative; z-index: 10; height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: center; padding: 0 4rem; will-change: opacity, transform;">
+      
+      <div class="max-w-8xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        
+        <div style="text-align: left;">
+          <h1 style="
+            font-family: 'Sora', sans-serif; 
+            font-size: clamp(3.5rem, 8vw, 7.5rem); /* Dimensione Font Molto Grande */
+            font-weight: 900; 
+            color: #ffffff; 
+            line-height: 0.95; 
+            letter-spacing: -0.04em; 
+            text-shadow: 0 10px 40px rgba(0,0,0,0.9);
+            margin-bottom: 2rem;
+          ">
+            Race Control<br> <span style="color: #22D3EE;">Console</span>
+          </h1>
+          
+          <div style="display: flex; align-items: center; justify-content: flex-start; gap: 1.5rem;">
+            <div style="width: 80px; height: 4px; background: #6366F1; box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);"></div>
+            <p style="
+              font-family: 'IBM Plex Sans', sans-serif; 
+              font-size: clamp(1.2rem, 2vw, 1.8rem); 
+              font-weight: 500; 
+              color: #cbd5e1; 
+              margin: 0; 
+              text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+            ">
+              Operational Decision Interface
+            </p>
+          </div>
+        </div>
+
+        <div class="flex justify-center lg:justify-end mt-8 lg:mt-0">
+          <img
+            src="./fmi-logo.png"
+            alt="FMI Logo"
+            style="
+              width: 100%;
+              max-width: 550px;      /* DIMENSIONE AUMENTATA */
+              height: auto;
+              object-fit: contain;
+              filter: drop-shadow(0 30px 80px rgba(34, 211, 238, 0.3));
+              transform: translateZ(0);
+            "
+          />
+        </div>
+
       </div>
-     </div>
+    
+      <div id="scrollHint" style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.75rem; animation: bounceHint 2s infinite;">
+        <div style="width: 3px; height: 60px; background: linear-gradient(180deg, transparent 0%, #22D3EE 50%, transparent 100%); box-shadow: 0 0 20px rgba(34, 211, 238, 0.6);"></div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+          <span style="font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 800; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);">Scroll Down</span>
+          <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.6));"><polyline points="7 13 12 18 17 13"></polyline> <polyline points="7 6 12 11 17 6"></polyline></svg>
+        </div>
+      </div>
     </div>
-   </div>
   </section><!-- Narrative Scroll Section -->
   <section id="narrativeSection" style="min-height: 300vh; position: relative;"><!-- Sticky Container -->
    <div id="narrativeSticky" style="position: sticky; top: 0; height: 100vh; overflow: hidden;"><!-- Step 1: Command Center -->
