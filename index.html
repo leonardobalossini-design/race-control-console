@@ -249,7 +249,33 @@
 .sidebar.sidebar-collapsed .sidebar-foot {
   display: none !important;
 }
+   
+/* ========== Collapsed: SOLO le 3 linee, niente altro ========== */
+.sidebar.sidebar-collapsed {
+  background: transparent !important;
+  border-right: none !important;
+  box-shadow: none !important;
+  width: auto !important;
+  flex: 0 0 auto !important;
+}
 
+.sidebar.sidebar-collapsed .sidebar-head {
+  background: transparent !important;
+  border-bottom: none !important;
+  padding: 0 !important;
+}
+
+.sidebar.sidebar-collapsed .sidebar-head > div {
+  justify-content: center !important;
+  padding: 0 !important;
+}
+
+/* il bottone NON deve avere sfondo */
+.sidebar.sidebar-collapsed .sidebar-toggle {
+  background: none !important;
+  border: none !important;
+  padding: 8px !important;
+}
 /* centra il toggle quando collapsed */
 .sidebar.sidebar-collapsed .sidebar-head > div {
   justify-content: center !important;
