@@ -1541,11 +1541,25 @@
     });
 
     // ========== Initialization ==========
+   // ========== Initialization ==========
     async function init() {
       document.getElementById('userInfo').textContent = 'User: demo@example.com';
 
-   initSidebarToggle();
-     
+      initSidebarToggle();
+      
+      // --- NUOVO CODICE: Navigazione Sidebar ---
+      // Quando clicchi su "Console" (C), scorre alla sezione console
+      const navConsoleBtn = document.getElementById('navConsole');
+      if (navConsoleBtn) {
+        navConsoleBtn.addEventListener('click', () => {
+          const consoleSection = document.getElementById('console');
+          if (consoleSection) {
+            consoleSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      }
+      // -----------------------------------------
+
       // Initialize array containers
       addArrayItem('eventResultsArray');
       
