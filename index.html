@@ -132,13 +132,15 @@
 
 .sidebar {
   width: 260px;
-  flex: 0 0 260px;
+  /* Rimosso flex: 0 0 260px perché ora è fissa */
   background: #0B1220;
   border-right: 1px solid #1e293b;
-  position: sticky;
+  position: fixed; /* CAMBIATO DA STICKY A FIXED */
   top: 0;
+  left: 0; /* Ancorata a sinistra */
   height: 100vh;
   z-index: 50;
+  transition: width 0.15s ease; /* Aggiunge fluidità quando si chiude */
 }
 
 .sidebar-collapsed {
