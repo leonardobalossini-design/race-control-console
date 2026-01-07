@@ -439,16 +439,56 @@
       <div style="display: none; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1f2e 0%, #0f172a 50%, #1e293b 100%);"></div>
      </div><!-- Dark Overlay -->
      <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10, 15, 26, 0.5) 0%, rgba(10, 15, 26, 0.8) 100%);"></div><!-- Text Content Step 2 -->
-     <div id="step2Content" style="position: relative; z-index: 10; height: 100%; display: flex; align-items: center; justify-content: center; padding: 0 2rem; will-change: opacity;">
-      <div style="text-align: center; max-width: 56rem;">
-       <h2 style="font-family: 'Sora', sans-serif; font-size: clamp(2rem, 5vw, 4rem); font-weight: 800; color: #ffffff; margin-bottom: 2rem; line-height: 1.2; letter-spacing: -0.02em; text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);">Dove i dati diventano decisioni</h2>
-       <p style="font-family: 'IBM Plex Sans', sans-serif; font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 500; color: #ffffff; line-height: 1.8; letter-spacing: 0.01em; text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9); margin-bottom: 1.5rem;">Ogni input è tracciato. Ogni scelta è governata.</p>
-       <p style="font-family: 'IBM Plex Sans', sans-serif; font-size: clamp(1rem, 1.8vw, 1.35rem); font-weight: 400; color: #cbd5e1; line-height: 1.8; letter-spacing: 0.01em; text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9);">Dalla compilazione sul campo allo storico ufficiale, tutto scorre in modo automatico e verificabile.<br>
-         </p>
+  <div id="step2Content" style="position: relative; z-index: 10; height: 100%; display: flex; align-items: center; justify-content: center; padding: 0 4rem; will-change: opacity;">
+      
+      <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        
+        <div style="text-align: left;">
+           <p style="
+             font-family: 'IBM Plex Sans', sans-serif; 
+             font-size: clamp(1.2rem, 2vw, 1.6rem); 
+             font-weight: 500; 
+             color: #ffffff; 
+             line-height: 1.6; 
+             margin-bottom: 1.5rem; 
+             text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9);
+           ">
+             Ogni input è tracciato.<br>
+             Ogni scelta è governata.
+           </p>
+           
+           <p style="
+             font-family: 'IBM Plex Sans', sans-serif; 
+             font-size: clamp(1rem, 1.2vw, 1.25rem); 
+             font-weight: 400; 
+             color: #cbd5e1; 
+             line-height: 1.8; 
+             text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9);
+             max-width: 28rem;   /* Blocco stretto */
+             margin-right: auto; /* Mantiene il blocco a sinistra */
+           ">
+             Dalla compilazione sul campo allo storico ufficiale, tutto scorre in modo automatico e verificabile.
+           </p>
+        </div>
+
+        <div style="text-align: right;">
+           <h2 style="
+             font-family: 'Sora', sans-serif; 
+             font-size: clamp(3rem, 5vw, 5rem); 
+             font-weight: 800; 
+             color: #ffffff; 
+             line-height: 1.1; 
+             letter-spacing: -0.02em; 
+             text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
+           ">
+             Dove i dati<br>
+             diventano <span style="color: #22D3EE;">decisioni</span>
+           </h2>
+           <div style="width: 60px; height: 4px; background: #6366F1; margin-top: 1.5rem; margin-left: auto; box-shadow: 0 0 15px rgba(99, 102, 241, 0.6);"></div>
+        </div>
+
       </div>
      </div>
-    </div>
-   </div>
   </section><!-- Main Application Shell -->
   <div id="appShell" class="w-full app-layout" style="background: linear-gradient(135deg, #0F172A 0%, #1e293b 100%); position: relative; z-index: 20;">
   <!-- Sidebar -->
