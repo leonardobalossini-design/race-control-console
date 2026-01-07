@@ -924,11 +924,6 @@
            Cancel
          </button>
        </div>
-
-      </form>
-     </div>
-    </div>
-   </div>
   <script>
     // ========== Hero Scroll Animation ==========
     let rafId = null;
@@ -1071,295 +1066,121 @@
     let currentEventId = null;
     let currentIncidentId = null;
     let allIncidents = [];
-    let actionTaxonomyVocab = [];
+    let mockEvents = []; // Diventa la cache locale dei dati scaricati da Google
 
-    // ========== API Client (Mock - sostituire con google.script.run) ==========
+    // ========== API Client REALE (Google Apps Script) ==========
     const API = {
-      // Event endpoints
-      async getEvent(eventId) {
-        return mockGetEvent(eventId);
-      },
-      async saveEvent(eventData) {
-        return mockSaveEvent(eventData);
-      },
-      async listEvents() {
-        return mockListEvents();
-      },
-      
-      // Incident endpoints
-      async listIncidents(eventId) {
-        return mockListIncidents(eventId);
-      },
-      async getIncident(incidentId) {
-        return mockGetIncident(incidentId);
-      },
-      async createIncident(eventId, incidentData) {
-        return mockCreateIncident(eventId, incidentData);
-      },
-      async updateIncident(incidentId, incidentData) {
-        return mockUpdateIncident(incidentId, incidentData);
-      },
-      async deleteIncident(incidentId) {
-        return mockDeleteIncident(incidentId);
+      // 1. EVENTI: Scarica la lista dal foglio
+      listEvents: () => {
+        return new Promise((resolve) => {
+          google.script.run
+            .withSuccessHandler((data) => {
+               mockEvents = data; // Aggiorna la memoria locale
+               resolve({success: true, data: data});
+            })
+            .withFailureHandler((err) => {
+               console.error(err);
+               resolve({success: false, error: err});
+            })
+            .getEvents();
+        });
       },
       
-      // Decision endpoints
-      async getDecision(incidentId) {
-        return mockGetDecision(incidentId);
+      // Salva un evento (Nuovo o Modificato)
+      saveEvent: (eventData) => {
+        return new Promise((resolve) => {
+          google.script.run
+            .withSuccessHandler((res) => resolve(res))
+            .withFailureHandler((err) => {
+               console.error(err);
+               resolve({success: false, error: err});
+            })
+            .saveEvent(eventData);
+        });
       },
-      async saveDecision(incidentId, decisionData) {
-        return mockSaveDecision(incidentId, decisionData);
+
+      // Recupera un singolo evento (dalla memoria locale appena scaricata)
+      getEvent: (eventId) => {
+        return new Promise((resolve) => {
+           const event = mockEvents.find(e => e.event_id === eventId);
+           resolve({success: true, data: event});
+        });
       },
-      async deleteDecision(incidentId) {
-        return mockDeleteDecision(incidentId);
+
+      // 2. INCIDENTI: Scarica dal foglio incidents
+      listIncidents: (eventId) => {
+         return new Promise((resolve) => {
+          google.script.run
+            .withSuccessHandler(data => resolve({success: true, data: data}))
+            .getIncidents(eventId);
+         });
       },
       
-      // Vocab
-      async getActionTaxonomyVocab() {
-        return mockGetActionTaxonomyVocab();
+      getIncident: (incidentId) => {
+         // Cerca nell'array locale allIncidents per velocità
+         return new Promise((resolve) => {
+            const inc = allIncidents.find(i => i.incident_id === incidentId);
+            resolve({success: true, data: inc});
+         });
       },
-      async getPenaltyCatalog() {
-        return mockGetPenaltyCatalog();
+
+      createIncident: (eventId, incidentData) => {
+         incidentData.event_id = eventId;
+         return new Promise((resolve) => {
+          google.script.run
+            .withSuccessHandler(res => resolve(res))
+            .saveIncident(incidentData);
+         });
+      },
+      
+      updateIncident: (incidentId, incidentData) => {
+         // Lato Google Script, saveIncident gestisce anche l'aggiornamento se l'ID esiste
+         return new Promise((resolve) => {
+          google.script.run
+            .withSuccessHandler(res => resolve(res))
+            .saveIncident(incidentData);
+         });
+      },
+      
+      deleteIncident: (incidentId) => {
+         return new Promise((resolve) => {
+          google.script.run
+            .withSuccessHandler(res => resolve(res))
+            .deleteIncident(incidentId);
+         });
+      },
+      
+      // 3. DECISIONI
+      getDecision: (incidentId) => {
+        return new Promise((resolve) => {
+           google.script.run
+             .withSuccessHandler(data => resolve({success: true, data: data}))
+             .getDecision(incidentId);
+        });
+      },
+      
+      saveDecision: (incidentId, decisionData) => {
+         return new Promise((resolve) => {
+           google.script.run
+             .withSuccessHandler(res => resolve(res))
+             .saveDecision(incidentId, decisionData);
+         });
+      },
+
+      // 4. VOCABOLARI (Questi restano fissi nel codice per ora)
+      getActionTaxonomyVocab: () => {
+        return Promise.resolve({
+          success: true, 
+          data: ['PRE_GRID_CONTACT', 'START_PROCEDURE', 'LATE_BRAKING', 'OVERTAKE_ATTEMPT', 'TRACK_LIMITS', 'COLLISION', 'IMPEDING', 'TECHNICAL', 'UNSAFE_RELEASE']
+        });
+      },
+      getPenaltyCatalog: () => {
+        return Promise.resolve({
+          success: true, 
+          data: ['WARNING', 'LONG_LAP', 'DOUBLE_LONG_LAP', 'TIME_PENALTY', 'RIDE_THROUGH', 'DROP_POSITION', 'DISQUALIFICATION']
+        });
       }
     };
-
-    // ========== Mock Data (RIMUOVERE in produzione) ==========
-    let mockEvents = [
-  {
-    event_id: "CIV25-R01-MISANO",
-    series: "CIV",
-    season: "2025",
-    event_name: "CIV 2025 — Round 1 — Misano",
-    location: "Misano World Circuit “Marco Simoncelli”",
-    date_local: "2025-04-05",
-    session: "",
-    weather: "",
-    track_status: "",
-    results_top10: "[]",
-    raw_transcript: ""
-  },
-  {
-    event_id: "CIV25-R02-MUGELLO",
-    series: "CIV",
-    season: "2025",
-    event_name: "CIV 2025 — Round 2 — Mugello",
-    location: "Mugello Circuit",
-    date_local: "2025-05-31",
-    session: "",
-    weather: "",
-    track_status: "",
-    results_top10: "[]",
-    raw_transcript: ""
-  },
-  {
-    event_id: "CIV25-R03-VALLELUNGA",
-    series: "CIV",
-    season: "2025",
-    event_name: "CIV 2025 — Round 3 — Vallelunga",
-    location: "Autodromo Vallelunga “Piero Taruffi”",
-    date_local: "2025-06-28",
-    session: "",
-    weather: "",
-    track_status: "",
-    results_top10: "[]",
-    raw_transcript: ""
-  },
-  {
-    event_id: "CIV25-R04-MISANO-NIGHT",
-    series: "CIV",
-    season: "2025",
-    event_name: "CIV 2025 — Round 4 — Misano Racing Night",
-    location: "Misano World Circuit “Marco Simoncelli”",
-    date_local: "2025-07-26",
-    session: "",
-    weather: "",
-    track_status: "",
-    results_top10: "[]",
-    raw_transcript: ""
-  },
-  {
-    event_id: "CIV25-R05-IMOLA",
-    series: "CIV",
-    season: "2025",
-    event_name: "CIV 2025 — Round 5 — Imola",
-    location: "Autodromo Internazionale Enzo e Dino Ferrari (Imola)",
-    date_local: "2025-09-06",
-    session: "",
-    weather: "",
-    track_status: "",
-    results_top10: "[]",
-    raw_transcript: ""
-  },
-  {
-    event_id: "CIV25-R06-MUGELLO",
-    series: "CIV",
-    season: "2025",
-    event_name: "CIV 2025 — Round 6 — Mugello",
-    location: "Mugello Circuit",
-    date_local: "2025-10-04",
-    session: "",
-    weather: "",
-    track_status: "",
-    results_top10: "[]",
-    raw_transcript: ""
-  },
-  {
-    event_id: "MOTOGP25-VALENCIA",
-    series: "MotoGP",
-    season: "2025",
-    event_name: "MotoGP 2025 — Valencia GP",
-    location: "Circuit Ricardo Tormo (Valencia)",
-    date_local: "2025-11-16",
-    session: "",
-    weather: "",
-    track_status: "",
-    results_top10: "[]",
-    raw_transcript: ""
-  }
-];
-    let mockIncidents = [
-      {incident_id: 'INC-001', event_id: 'EVT-001', timestamp: 'lap 2', lap: 2, turn: 'Turn 1', race_phase: 'RACING', action_taxonomy: 'Aggressive Overtake', severity: 'HIGH', description_neutral: 'Collision at turn 1', riders_involved: '["Hamilton", "Verstappen"]', flags: '["Red"]', evidence: '["Video 1"]'}
-    ];
-    let mockDecisions = [
-      {event_id: 'EVT-001', incident_id: 'INC-001', reaction_recorded: '5 second time penalty', decision_type: 'PENALTY', confidence_level: 'HIGH', regulatory_basis: 'FIA Sporting Code Art. 12.3'}
-    ];
-    let mockActionTaxonomy = ['PRE_GRID_CONTACT', 'START_PROCEDURE_VIOLATION', 'LATE_BRAKING_CONTACT', 'OVERTAKE_ATTEMPT', 'TRACK_LIMITS', 'CONTACT_LIGHT', 'DEFENSIVE_BLOCKING', 'PIT_LANE_SPEED_CHECK', 'CLOSE_BATTLE', 'RACE_LEAD_MANAGEMENT'];
-    let mockPenaltyCatalog = ['5 second time penalty', '10 second time penalty', 'Drive-through penalty', 'Grid penalty', 'Warning', 'No further action'];
-
-    function mockGetEvent(eventId) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const event = mockEvents.find(e => e.event_id === eventId);
-          resolve({success: true, data: event || null});
-        }, 300);
-      });
-    }
-
-    function mockSaveEvent(eventData) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const index = mockEvents.findIndex(e => e.event_id === eventData.event_id);
-          if (index >= 0) {
-            mockEvents[index] = eventData;
-          } else {
-            mockEvents.push(eventData);
-          }
-          resolve({success: true, event_id: eventData.event_id});
-        }, 300);
-      });
-    }
-
-    function mockListEvents() {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({success: true, data: mockEvents.map(e => ({event_id: e.event_id, event_name: e.event_name, date_local: e.date_local, session: e.session}))});
-        }, 300);
-      });
-    }
-
-    function mockListIncidents(eventId) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const incidents = mockIncidents.filter(i => i.event_id === eventId);
-          resolve({success: true, data: incidents});
-        }, 300);
-      });
-    }
-
-    function mockGetIncident(incidentId) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const incident = mockIncidents.find(i => i.incident_id === incidentId);
-          resolve({success: true, data: incident || null});
-        }, 300);
-      });
-    }
-
-    function mockCreateIncident(eventId, incidentData) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const eventIncidents = mockIncidents.filter(i => i.event_id === eventId);
-          const maxNum = eventIncidents.length > 0 
-            ? Math.max(...eventIncidents.map(i => parseInt(i.incident_id.split('-')[1]))) 
-            : 0;
-          const newId = `INC-${String(maxNum + 1).padStart(3, '0')}`;
-          const newIncident = {...incidentData, incident_id: newId, event_id: eventId};
-          mockIncidents.push(newIncident);
-          resolve({success: true, incident_id: newId});
-        }, 300);
-      });
-    }
-
-    function mockUpdateIncident(incidentId, incidentData) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const index = mockIncidents.findIndex(i => i.incident_id === incidentId);
-          if (index >= 0) {
-            mockIncidents[index] = {...mockIncidents[index], ...incidentData};
-          }
-          resolve({success: true});
-        }, 300);
-      });
-    }
-
-    function mockDeleteIncident(incidentId) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          mockIncidents = mockIncidents.filter(i => i.incident_id !== incidentId);
-          mockDecisions = mockDecisions.filter(d => d.incident_id !== incidentId);
-          resolve({success: true});
-        }, 300);
-      });
-    }
-
-    function mockGetDecision(incidentId) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const decision = mockDecisions.find(d => d.incident_id === incidentId);
-          resolve({success: true, data: decision || null});
-        }, 300);
-      });
-    }
-
-    function mockSaveDecision(incidentId, decisionData) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const index = mockDecisions.findIndex(d => d.incident_id === incidentId);
-          const decision = {...decisionData, incident_id: incidentId, event_id: currentEventId};
-          if (index >= 0) {
-            mockDecisions[index] = decision;
-          } else {
-            mockDecisions.push(decision);
-          }
-          resolve({success: true});
-        }, 300);
-      });
-    }
-
-    function mockDeleteDecision(incidentId) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          mockDecisions = mockDecisions.filter(d => d.incident_id !== incidentId);
-          resolve({success: true});
-        }, 300);
-      });
-    }
-
-    function mockGetActionTaxonomyVocab() {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({success: true, data: mockActionTaxonomy});
-        }, 300);
-      });
-    }
-
-    function mockGetPenaltyCatalog() {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({success: true, data: mockPenaltyCatalog});
-        }, 300);
-      });
-    }
 
     // ========== Utility Functions ==========
     function showToast(message, type = 'success') {
@@ -1850,9 +1671,8 @@
       }
     });
 
-// ========== Initialization ==========
-    async function init() {
-      document.getElementById('userInfo').textContent = 'User: demo@example.com';
+async function init() {
+      document.getElementById('userInfo').textContent = 'User: Race Director';
 
       initSidebarToggle();
       
@@ -1860,46 +1680,33 @@
       const consoleSection = document.getElementById('console');
       const guideSection = document.getElementById('guideView');
       const appShell = document.getElementById('appShell');
-      
       const btnConsole = document.getElementById('navConsole');
       const btnGuide = document.getElementById('navGuide');
 
-      // Click su CONSOLE (C)
       if (btnConsole) {
         btnConsole.addEventListener('click', () => {
-          // Mostra Console, Nascondi Guida
-          if(consoleSection) consoleSection.classList.remove('hidden');
-          if(guideSection) guideSection.classList.add('hidden');
-          
-          // Aggiorna stato bottoni (stile)
-          btnConsole.classList.add('active'); 
+          consoleSection.classList.remove('hidden');
+          guideSection.classList.add('hidden');
+          btnConsole.classList.add('active');
           if(btnGuide) btnGuide.classList.remove('active');
-
-          // Scrolla all'inizio del Main Panel
           if(appShell) appShell.scrollIntoView({ behavior: 'smooth' });
         });
       }
 
-      // Click su GUIDA (G)
       if (btnGuide) {
         btnGuide.addEventListener('click', () => {
-          // Nascondi Console, Mostra Guida
-          if(consoleSection) consoleSection.classList.add('hidden');
-          if(guideSection) guideSection.classList.remove('hidden');
-
-          // Aggiorna stato bottoni (stile)
+          consoleSection.classList.add('hidden');
+          guideSection.classList.remove('hidden');
           btnGuide.classList.add('active');
           if(btnConsole) btnConsole.classList.remove('active');
-          
-          // Scrolla all'inizio del Main Panel
           if(appShell) appShell.scrollIntoView({ behavior: 'smooth' });
         });
       }
-      // -----------------------------------------
 
-      // Initialize array containers
+      // Inizializza array vuoti
       addArrayItem('eventResultsArray');
       
+      // CARICA I DATI REALI DA GOOGLE
       await loadEventSelector();
       await loadActionTaxonomyVocab();
     }
