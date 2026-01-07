@@ -132,15 +132,22 @@
 
 .sidebar {
   width: 260px;
-  /* Rimosso flex: 0 0 260px perché ora è fissa */
   background: #0B1220;
   border-right: 1px solid #1e293b;
-  position: fixed; /* CAMBIATO DA STICKY A FIXED */
-  top: 0;
-  left: 0; /* Ancorata a sinistra */
-  height: 100vh;
+  position: fixed;
+  
+  /* --- MODIFICHE ALTEZZA --- */
+  top: 1vh;        /* Lascia un 1% di spazio dall'alto */
+  height: 98vh;    /* Occupa il 98% dell'altezza (lasciando 1% sotto) */
+  left: 0;
+  
   z-index: 50;
-  transition: width 0.15s ease; /* Aggiunge fluidità quando si chiude */
+  transition: width 0.15s ease;
+  
+  /* Opzionale: rende gli angoli a destra leggermente curvi per estetica */
+  border-radius: 0 12px 12px 0; 
+  /* Opzionale: aggiunge un'ombra leggera per staccarla dal fondo */
+  box-shadow: 4px 0 24px rgba(0,0,0,0.4); 
 }
 
 .sidebar-collapsed {
@@ -373,7 +380,7 @@
   </section><!-- Main Application Shell -->
   <div id="appShell" class="w-full app-layout" style="background: linear-gradient(135deg, #0F172A 0%, #1e293b 100%); position: relative; z-index: 20;">
   <!-- Sidebar -->
- <aside id="sidebar" class="sidebar">
+<aside id="sidebar" class="sidebar sidebar-collapsed">
     <div class="sidebar-head" style="padding: 16px 14px; border-bottom: 1px solid #1e293b;">
       <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
         <div>
