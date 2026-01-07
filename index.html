@@ -903,7 +903,7 @@
         result.data.forEach(event => {
           const option = document.createElement('option');
           option.value = event.event_id;
-          option.textContent = `${event.event_name} (${event.date})`;
+          option.textContent = `${event.event_name} (${event.date_local || "no date"})`;
           selector.appendChild(option);
         });
       }
@@ -914,6 +914,7 @@
       if (eventId) {
         currentEventId = eventId;
         await loadEvent(eventId);
+        switchTab('event');
       }
     });
 
