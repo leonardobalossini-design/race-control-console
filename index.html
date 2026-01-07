@@ -296,7 +296,7 @@
   </section><!-- Main Application Shell -->
   <div id="appShell" class="main-wrapper w-full app-layout" style="background: linear-gradient(135deg, #0F172A 0%, #1e293b 100%); position: relative; z-index: 20;">
   <!-- Sidebar -->
-  <aside id="sidebar" class="sidebar">
+  <aside id="sidebar" class="sidebar sidebar-collapsed">
     <div style="padding: 16px 14px; border-bottom: 1px solid #1e293b;">
       <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
         <div>
@@ -307,13 +307,18 @@
             Navigation
           </div>
         </div>
-        <button id="sidebarToggle" type="button"
-          class="px-3 py-2 rounded-lg border transition"
-          style="background:#0F172A; border-color:#334155; color:#CBD5E1;"
-          onmouseover="this.style.background='#111b2e'"
-          onmouseout="this.style.background='#0F172A'">
-          ☰
-        </button>
+       <button id="sidebarToggle" type="button"
+  class="sidebar-toggle px-3 py-2 rounded-lg border transition"
+  style="background:#0F172A; border-color:#334155; color:#CBD5E1;"
+  aria-expanded="false"
+  onmouseover="this.style.background='#111b2e'"
+  onmouseout="this.style.background='#0F172A'">
+  <span class="bars" aria-hidden="true">
+    <i class="bar"></i>
+    <i class="bar"></i>
+    <i class="bar"></i>
+  </span>
+</button>
       </div>
     </div>
 
