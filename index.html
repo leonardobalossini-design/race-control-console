@@ -1399,12 +1399,16 @@ function initSidebarToggle() {
 
   // stato iniziale (sidebar chiusa)
   toggle.classList.remove('is-open');
+  toggle.setAttribute('aria-expanded', 'false');
 
   toggle.addEventListener('click', () => {
     const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
 
     sidebar.classList.toggle('sidebar-collapsed');
     toggle.classList.toggle('is-open', isCollapsed);
+
+    // aria: true quando la sidebar DIVENTA aperta
+    toggle.setAttribute('aria-expanded', String(isCollapsed));
   });
 }
     // Run on page load
