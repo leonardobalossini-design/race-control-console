@@ -224,7 +224,10 @@
   justify-content: center;
   transition: all 0.18s ease;
 }
-
+/* QUANDO la sidebar è APERTA (NON collapsed) -> le 3 barre stanno affianco */
+.sidebar:not(.sidebar-collapsed) .sidebar-toggle .bars {
+  flex-direction: row;
+}
 /* Default = SIDEBAR CHIUSA (sidebar-collapsed) => linee orizzontali */
 .sidebar-toggle .bar {
   display: block;
