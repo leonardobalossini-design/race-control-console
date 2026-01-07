@@ -371,7 +371,7 @@
   </section><!-- Main Application Shell -->
   <div id="appShell" class="main-wrapper w-full app-layout" style="background: linear-gradient(135deg, #0F172A 0%, #1e293b 100%); position: relative; z-index: 20;">
   <!-- Sidebar -->
-  <aside id="sidebar" class="sidebar sidebar-collapsed">
+ <aside id="sidebar" class="sidebar">
     <div class="sidebar-head" style="padding: 16px 14px; border-bottom: 1px solid #1e293b;">
       <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
         <div>
@@ -1437,18 +1437,31 @@ function initSidebarToggle() {
   const toggle = document.getElementById('sidebarToggle');
   if (!sidebar || !toggle) return;
 
-  // stato iniziale (sidebar chiusa)
-  toggle.classList.remove('is-open');
-  toggle.setAttribute('aria-expanded', 'false');
+  // 1. Controlliamo se la sidebar parte chiusa o aperta guardando l'HTML
+  const isInitiallyCollapsed = sidebar.classList.contains('sidebar-collapsed');
 
+  // 2. Impostiamo lo stato iniziale del bottone in base alla sidebar
+  if (!isInitiallyCollapsed) {
+    // Se è APERTA (come vuoi tu), l'icona deve essere in modalità "aperta"
+    toggle.classList.add('is-open');
+    toggle.setAttribute('aria-expanded', 'true');
+  } else {
+    // Se è CHIUSA
+    toggle.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  // 3. Gestione del Click
   toggle.addEventListener('click', () => {
-    const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
-
+    // Aggiunge o toglie la classe 'sidebar-collapsed'
     sidebar.classList.toggle('sidebar-collapsed');
-    toggle.classList.toggle('is-open', isCollapsed);
-
-    // aria: true quando la sidebar DIVENTA aperta
-    toggle.setAttribute('aria-expanded', String(isCollapsed));
+    
+    // Controlla se ADESSO è chiusa
+    const isNowCollapsed = sidebar.classList.contains('sidebar-collapsed');
+    
+    // Se è chiusa, rimuovi classe 'is-open', altrimenti aggiungila
+    toggle.classList.toggle('is-open', !isNowCollapsed);
+    toggle.setAttribute('aria-expanded', String(!isNowCollapsed));
   });
 }
     // Run on page load
