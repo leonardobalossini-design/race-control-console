@@ -122,6 +122,93 @@
       gap: 8px;
       margin-bottom: 8px;
     }
+   /* ========== Sidebar Layout ==========
+   NOTA: il tuo appShell diventa un "layout" a due colonne (sidebar + main) */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.sidebar {
+  width: 260px;
+  flex: 0 0 260px;
+  background: #0B1220;
+  border-right: 1px solid #1e293b;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 50;
+}
+
+.sidebar-collapsed {
+  width: 84px;
+  flex: 0 0 84px;
+}
+
+.sidebar .nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: #CBD5E1;
+  font-weight: 600;
+  transition: background .15s ease, color .15s ease;
+}
+
+.sidebar .nav-item:hover {
+  background: #111b2e;
+  color: #fff;
+}
+
+.sidebar .nav-item.active {
+  background: rgba(34, 211, 238, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+}
+
+.sidebar .nav-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-collapsed .nav-label,
+.sidebar-collapsed .sidebar-title,
+.sidebar-collapsed .sidebar-subtitle {
+  display: none;
+}
+
+.main-panel {
+  flex: 1;
+  min-width: 0;
+}
+
+.section-hidden {
+  display: none !important;
+}
+
+/* Guida: stile base (coerente con tua UI) */
+.guide-card {
+  background: #0F172A;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 20px 45px rgba(0,0,0,.35);
+}
+
+.guide-kbd {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #e2e8f0;
+  font-weight: 700;
+  font-size: 12px;
+}
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -207,8 +294,54 @@
     </div>
    </div>
   </section><!-- Main Application Shell -->
-  <div id="appShell" class="main-wrapper w-full" style="background: linear-gradient(135deg, #0F172A 0%, #1e293b 100%); position: relative; z-index: 20;"><!-- Console Section -->
-   <div id="console"><!-- Header -->
+  <div id="appShell" class="main-wrapper w-full app-layout" style="background: linear-gradient(135deg, #0F172A 0%, #1e293b 100%); position: relative; z-index: 20;">
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar">
+    <div style="padding: 16px 14px; border-bottom: 1px solid #1e293b;">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+        <div>
+          <div class="sidebar-title" style="font-family:'Sora',sans-serif; font-weight:800; color:#22D3EE; font-size:14px;">
+            Race Control
+          </div>
+          <div class="sidebar-subtitle" style="color:#94a3b8; font-size:12px; margin-top:2px;">
+            Navigation
+          </div>
+        </div>
+        <button id="sidebarToggle" type="button"
+          class="px-3 py-2 rounded-lg border transition"
+          style="background:#0F172A; border-color:#334155; color:#CBD5E1;"
+          onmouseover="this.style.background='#111b2e'"
+          onmouseout="this.style.background='#0F172A'">
+          ☰
+        </button>
+      </div>
+    </div>
+
+    <nav style="padding: 12px;">
+      <button id="navConsole" class="nav-item active" type="button">
+        <span style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:10px; background:#111b2e; border:1px solid #1e293b; color:#22D3EE;">C</span>
+        <span class="nav-label">Console</span>
+      </button>
+
+      <div style="height:10px;"></div>
+
+      <button id="navGuide" class="nav-item" type="button">
+        <span style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:10px; background:#111b2e; border:1px solid #1e293b; color:#a78bfa;">G</span>
+        <span class="nav-label">Guida</span>
+      </button>
+    </nav>
+
+    <div style="margin-top:auto; padding: 12px; border-top: 1px solid #1e293b; color:#64748b; font-size:12px;">
+      <span class="nav-label">FMI • Race Direction</span>
+    </div>
+  </aside>
+
+  <!-- Main Panel -->
+  <div class="main-panel">
+
+    <!-- Console Section -->
+    <div id="console">
+      <!-- Header -->
     <header class="text-white shadow-2xl border-b-2" style="background: #0F172A; border-color: #22D3EE;">
      <div class="max-w-7xl mx-auto px-6 py-4">
       <div class="flex items-center justify-between">
@@ -1211,14 +1344,25 @@
     // ========== Initialization ==========
     async function init() {
       document.getElementById('userInfo').textContent = 'User: demo@example.com';
-      
+
+   initSidebarToggle();
+     
       // Initialize array containers
       addArrayItem('eventResultsArray');
       
       await loadEventSelector();
       await loadActionTaxonomyVocab();
     }
+   
+function initSidebarToggle() {
+  const sidebar = document.getElementById('sidebar');
+  const toggle = document.getElementById('sidebarToggle');
+  if (!sidebar || !toggle) return;
 
+  toggle.addEventListener('click', () => {
+    sidebar.classList.toggle('sidebar-collapsed');
+  });
+}
     // Run on page load
     window.addEventListener('DOMContentLoaded', init);
   </script>
