@@ -214,15 +214,22 @@
    =============================== */
 
 /* Contenitore delle stanghette */
-.sidebar-toggle .bars{
+/* ===============================
+   Sidebar toggle icon (||| → ≡)
+   =============================== */
+
+/* Contenitore */
+.sidebar-toggle .bars {
   display: flex;
+  flex-direction: column; /* VERTICALI di default */
   gap: 6px;
   align-items: center;
   justify-content: center;
+  transition: all 0.18s ease;
 }
 
-/* STATO DEFAULT → sidebar CHIUSA → stanghette VERTICALI */
-.sidebar-toggle .bar{
+/* Singola barra */
+.sidebar-toggle .bar {
   display: block;
   width: 2px;
   height: 18px;
@@ -232,8 +239,12 @@
   transition: all 0.18s ease;
 }
 
-/* STATO APERTO → stanghette ORIZZONTALI */
-.sidebar-toggle.is-open .bar{
+/* SIDEBAR APERTA → ORIZZONTALI */
+.sidebar:not(.sidebar-collapsed) .sidebar-toggle .bars {
+  flex-direction: row;
+}
+
+.sidebar:not(.sidebar-collapsed) .sidebar-toggle .bar {
   width: 18px;
   height: 2px;
 }
