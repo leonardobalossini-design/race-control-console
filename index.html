@@ -1421,7 +1421,8 @@ function triggerAIReport() {
         result.data.forEach(event => {
           const option = document.createElement('option');
           option.value = event.event_id;
-          option.textContent = `${event.event_name} (${event.date_local || "no date"})`;
+          let label = `[${event.event_id}] ${event.event_name}`;
+          if (event.session) label += ` - ${event.session}`;
           selector.appendChild(option);
         });
       }
