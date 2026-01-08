@@ -1501,6 +1501,156 @@ function triggerAIReport() {
       }
     });
 
+// --- FUNZIONE DI RENDERING AI ANALYSIS ---
+function renderAIAnalysis(event) {
+  console.log("Rendering AI Analysis for:", event.event_id);
+
+  // --- 1. Protocollo ---
+  const protocolBody = document.getElementById('protocolTableBody');
+  const protocolMsg = document.getElementById('protocolEmptyMsg');
+  protocolBody.innerHTML = '';
+  
+  let protocolData = [];
+  try {
+    if (event.ai_protocol_json) protocolData = JSON.parse(event.ai_protocol_json);
+  } catch(e) { console.error("Err parse protocol", e); }
+  
+  if (protocolData && protocolData.length > 0) {
+    protocolMsg.classList.add('hidden');
+    protocolData.forEach(row => {
+      const tr = document.createElement('tr');
+      tr.className = "hover:bg-slate-800 transition-colors";
+      tr.innerHTML = `
+        <td class="px-4 py-3 font-mono text-xs text-cyan-400 font-bold">${row.incident_id || '-'}</td>
+        <td class="px-4 py-3 text-slate-300">${row.action_description_neutral || row.action_taxonomy || '-'}</td>
+        <td class="px-4 py-3 font-semibold ${row.reaction_recorded ? 'text-green-400' : 'text-slate-500 italic'}">
+          ${row.reaction_recorded || 'No Action'}
+        </td>
+        <td class="px-4 py-3 italic text-xs text-slate-400">${row.regulatory_basis || '-'}</td>
+      `;
+      protocolBody.appendChild(tr);
+    });
+  } else {
+    protocolMsg.classList.remove('hidden');
+  }
+
+  // --- 2. Safety Heatmap ---
+  const turnContainer = document.getElementById('heatmapTurnContainer');
+  const phaseContainer = document.getElementById('heatmapPhaseContainer');
+  const safetyMsg = document.getElementById('safetyEmptyMsg');
+  turnContainer.innerHTML = '';
+  phaseContainer.innerHTML = '';
+  
+  let safetyData = null;
+  try {
+     if (event.ai_safety_json) safetyData = JSON.parse(event.ai_safety_json);
+  } catch(e) { console.error("Err parse safety", e); }
+
+  if (safetyData) {
+    safetyMsg.classList.add('hidden');
+    
+    // By Turn
+    if (safetyData.by_turn) {
+      safetyData.by_turn.forEach(item => {
+        let colorClass = 'bg-emerald-900 text-emerald-200 border-emerald-700'; // Low
+        if (item.severity_index >= 3) colorClass = 'bg-red-900 text-red-200 border-red-700'; // High
+        else if (item.severity_index >= 2) colorClass = 'bg-yellow-900 text-yellow-200 border-yellow-700'; // Med
+
+        const badge = document.createElement('div');
+        badge.className = `border px-3 py-2 rounded-lg flex flex-col items-center justify-center min-w-[70px] shadow-sm ${colorClass}`;
+        badge.innerHTML = `
+          <span class="text-[10px] font-bold opacity-80">TURN</span>
+          <span class="text-xl font-bold leading-none">${item.turn}</span>
+          <span class="text-[10px] mt-1 bg-black bg-opacity-20 px-1 rounded">${item.count} inc.</span>
+        `;
+        turnContainer.appendChild(badge);
+      });
+    }
+    
+    // By Phase
+    if (safetyData.by_race_phase) {
+      safetyData.by_race_phase.forEach(item => {
+        const div = document.createElement('div');
+        div.className = "flex items-center justify-between text-sm";
+        const width = Math.min(100, (item.count / 8) * 100); // Scala visiva
+        div.innerHTML = `
+          <span class="w-32 text-slate-400 text-xs uppercase tracking-wider">${item.race_phase}</span>
+          <div class="flex-1 h-2 bg-slate-700 rounded-full mx-3 overflow-hidden relative">
+            <div class="absolute top-0 left-0 h-full bg-blue-500 rounded-full" style="width: ${width}%"></div>
+          </div>
+          <span class="font-bold text-white w-6 text-right">${item.count}</span>
+        `;
+        phaseContainer.appendChild(div);
+      });
+    }
+  } else {
+    safetyMsg.classList.remove('hidden');
+  }
+
+  // --- 3. Regulatory Audit ---
+  const regContainer = document.getElementById('regulatoryCardsContainer');
+  const regMsg = document.getElementById('regulatoryEmptyMsg');
+  regContainer.innerHTML = '';
+
+  let regData = [];
+  try {
+     if (event.ai_regulatory_json) regData = JSON.parse(event.ai_regulatory_json);
+  } catch(e) { console.error("Err parse regulatory", e); }
+
+  if (regData && regData.length > 0) {
+    regMsg.classList.add('hidden');
+    regData.forEach(item => {
+      // Gestione struttura nidificata o piatta
+      const d = item.json || item; 
+
+      const isMatch = d.match_status === 'MATCHED';
+      const isConsistent = d.precedent_consistency === 'ALIGNED';
+      const isDiff = d.precedent_consistency === 'DIFFERENT';
+      
+      let borderClass = isMatch ? 'border-l-4 border-l-emerald-500' : 'border-l-4 border-l-red-500';
+      if (isMatch && isDiff) borderClass = 'border-l-4 border-l-yellow-500';
+
+      const card = document.createElement('div');
+      card.className = `rounded bg-slate-800 p-4 border border-slate-700 ${borderClass}`;
+      
+      card.innerHTML = `
+        <div class="flex justify-between items-start mb-3">
+          <div>
+            <div class="flex items-center gap-2">
+                <span class="font-mono text-sm font-bold text-white bg-slate-900 px-2 py-0.5 rounded border border-slate-600">${d.incident_id}</span>
+                <span class="text-xs text-slate-400 uppercase tracking-wide">${d.action_taxonomy}</span>
+            </div>
+          </div>
+          <div class="flex gap-2">
+             ${isDiff ? '<span class="px-2 py-0.5 rounded bg-yellow-900 text-yellow-200 text-[10px] font-bold border border-yellow-700 uppercase">⚠️ Deviation</span>' : ''}
+             <span class="px-2 py-0.5 rounded text-[10px] font-bold border uppercase ${isMatch ? 'bg-emerald-900 text-emerald-200 border-emerald-700' : 'bg-red-900 text-red-200 border-red-700'}">
+               ${d.match_status}
+             </span>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4 text-sm mb-3 bg-slate-900 bg-opacity-50 p-2 rounded">
+           <div>
+             <span class="block text-slate-500 text-[10px] uppercase">AI Recommendation</span>
+             <span class="text-white font-mono text-xs">${d.recommended_decision || 'N/A'}</span>
+           </div>
+           <div>
+             <span class="block text-slate-500 text-[10px] uppercase">Confidence</span>
+             <span class="text-cyan-400 font-bold text-xs">${d.confidence || '-'}</span>
+           </div>
+        </div>
+        
+        <p class="text-xs text-slate-400 leading-relaxed italic border-t border-slate-700 pt-2 mt-2">
+          "${d.rationale_short || d.rationale || 'No rationale.'}"
+        </p>
+      `;
+      regContainer.appendChild(card);
+    });
+  } else {
+    regMsg.classList.remove('hidden');
+  }
+}
+   
    async function loadEvent(eventId) {
       const result = await API.getEvent(eventId);
       
@@ -1546,6 +1696,7 @@ function triggerAIReport() {
             viewReportBtn.classList.remove('hidden');
           }
         }
+       renderAIAnalysis(event);
       }
     }
 
