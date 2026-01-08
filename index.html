@@ -1998,6 +1998,7 @@ function renderAIAnalysis(event) {
       }
 
       const decisionData = {
+        event_id: currentEventId,
         decision_type: formData.get('decision_type'),
         confidence_level: formData.get('confidence_level'),
         reaction_recorded: formData.get('reaction_recorded'),
