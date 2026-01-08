@@ -1500,6 +1500,7 @@ function triggerAIReport() {
         session: formData.get('session'),
         date_local: formData.get('date_local'),
         weather: formData.get('weather'),
+        session_status: formData.get('session_status'),
         track_status: formData.get('track_status'),
         results_top10: serializeArrayField(getArrayValues('eventResultsArray')),
         raw_transcript: formData.get('raw_transcript')
