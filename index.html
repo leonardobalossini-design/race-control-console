@@ -1438,11 +1438,21 @@ function triggerAIReport() {
       }
     });
 
-    async function loadEvent(eventId) {
+   async function loadEvent(eventId) {
       const result = await API.getEvent(eventId);
+      
+      // A. Reset Iniziale dei bottoni (nascondiamo tutto prima di caricare)
+      const viewReportBtn = document.getElementById('viewReportBtn');
+      if (viewReportBtn) {
+        viewReportBtn.classList.add('hidden');
+        viewReportBtn.href = '#';
+      }
+
       if (result.success && result.data) {
         const event = result.data;
         const form = document.getElementById('eventForm');
+        
+        // B. Caricamento Campi Standard
         form.event_id.value = event.event_id || '';
         form.series.value = event.series || '';
         form.season.value = event.season || '';
@@ -1454,7 +1464,25 @@ function triggerAIReport() {
         form.track_status.value = event.track_status || '';
         form.raw_transcript.value = event.raw_transcript || '';
         
+        // C. GESTIONE STATO SESSIONE (Per il tasto AI)
+        // Carichiamo lo stato salvato. Se manca, mettiamo 'SCHEDULED' di default.
+        if (form.session_status) {
+            form.session_status.value = event.session_status || 'SCHEDULED';
+            // Chiamiamo subito la funzione che mostra/nasconde il tasto AI
+            checkSessionStatus();
+        }
+
+        // D. Gestione Array (Top 10)
         populateArrayContainer('eventResultsArray', event.results_top10);
+        
+        // E. GESTIONE REPORT URL (Per il tasto "Leggi Report")
+        // Se n8n ha scritto il link nel foglio, mostriamo il bottone verde
+        if (event.report_url && event.report_url.startsWith('http')) {
+          if (viewReportBtn) {
+            viewReportBtn.href = event.report_url;
+            viewReportBtn.classList.remove('hidden');
+          }
+        }
       }
     }
 
