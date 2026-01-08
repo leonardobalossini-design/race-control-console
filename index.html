@@ -611,9 +611,9 @@
     <div id="eventSubmitSpinner" class="loading-spinner hidden"></div>
   </button>
 
-  <button type="button" onclick="triggerAIReport()" class="px-6 py-3 font-semibold rounded-lg transition flex items-center gap-2 border border-slate-600" style="background: #1e293b; color: #a5b4fc;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#1e293b'">
-    <span> Genera Report AI</span>
-  </button>
+  <button id="aiReportBtn" type="button" onclick="triggerAIReport()" class="hidden px-6 py-3 font-semibold rounded-lg transition flex items-center gap-2 border border-slate-600" style="background: #1e293b; color: #a5b4fc;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#1e293b'">
+   <span> Genera Report AI</span>
+ </button>
 </div>
 
 <script>
@@ -1300,7 +1300,19 @@ function triggerAIReport() {
         arr.forEach(val => addArrayItem(containerId, val));
       }
     }
-
+   
+    function checkSessionStatus() {
+      const status = document.getElementById('sessionStatusSelect').value;
+      const aiBtn = document.getElementById('aiReportBtn');
+       
+       // LOGICA: Mostra il tasto AI solo se la sessione è finita
+       if (status === 'ENDED') {
+         aiBtn.classList.remove('hidden');
+       } else {
+         aiBtn.classList.add('hidden');
+       }
+     }
+   
     // ========== Tab Management ==========
     function switchTab(tabName) {
       document.querySelectorAll('.tab-btn').forEach(btn => {
