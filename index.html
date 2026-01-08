@@ -1417,17 +1417,43 @@ function triggerAIReport() {
     });
 
     // ========== Event Management ==========
-    async function loadEventSelector() {
-      const result = await API.listEvents();
+async function loadEventSelector() {
+      // 1. BLOCCO PER TEST LOCALE (Fondamentale se apri il file sul PC)
+      let result;
+      if (typeof google === 'undefined') {
+         console.log("Modalità Test Locale: Uso dati finti");
+         result = {
+           success: true,
+           data: [
+             { event_id: 'CIV25-PROVA1-Gara', event_name: 'CIV Round 1 - Misano', series: 'CIV', season: '2025', session: 'Gara 1' },
+             { event_id: 'TEST-GP', event_name: 'Test Invernali', session: 'FP1' }
+           ]
+         };
+      } else {
+         // Se siamo online su Google, scarica i dati veri
+         result = await API.listEvents();
+      }
+
       const selector = document.getElementById('eventSelector');
-      selector.innerHTML = '<option value="">Select or create new event...</option>';
+      // Resetta il menu con lo stile corretto
+      selector.innerHTML = '<option value="" style="background-color: #1e293b; color: white;">Select or create new event...</option>';
       
       if (result.success && result.data) {
         result.data.forEach(event => {
           const option = document.createElement('option');
           option.value = event.event_id;
+          
+          // 2. FIX VISIVO: Forza colori scuri per ogni opzione
+          option.style.backgroundColor = '#1e293b';
+          option.style.color = 'white';
+
+          // Crea il testo dell'etichetta
           let label = `[${event.event_id}] ${event.event_name}`;
           if (event.session) label += ` - ${event.session}`;
+          
+          // 3. FIX CRUCIALE: Inserisce il testo dentro l'opzione (mancava questo!)
+          option.textContent = label;
+          
           selector.appendChild(option);
         });
       }
