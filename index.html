@@ -588,6 +588,15 @@
           </div>
           <div><label class="block text-sm font-semibold mb-2" style="color: #CBD5E1;">Weather</label> <select name="weather" class="w-full px-4 py-2 text-white border rounded-lg" style="background: #1e293b; border-color: #334155;" onfocus="this.style.borderColor='#22D3EE'" onblur="this.style.borderColor='#334155'"> <option value="">Select...</option> <option value="Sole">Sole</option> <option value="Nuvoloso">Nuvoloso</option> <option value="Pioggia">Pioggia</option> <option value="Variabile">Variabile</option> </select>
           </div>
+          <div>
+          <label class="block text-sm font-semibold mb-2" style="color: #CBD5E1;">Stato Sessione</label>
+          <select name="session_status" id="sessionStatusSelect" onchange="checkSessionStatus()" class="w-full px-4 py-2 text-white border rounded-lg" style="background: #1e293b; border-color: #334155;" onfocus="this.style.borderColor='#22D3EE'" onblur="this.style.borderColor='#334155'"> 
+          <option value="SCHEDULED">In Programma</option>
+          <option value="LIVE">🟢 LIVE (In Corso)</option>
+          <option value="RED_FLAG">🔴 RED FLAG (Sospesa)</option>
+          <option value="ENDED">🏁 ENDED (Conclusa)</option>
+          </select>
+          </div>
           <div class="col-span-2"><label class="block text-sm font-semibold mb-2" style="color: #CBD5E1;">Track Status</label> <select name="track_status" class="w-full px-4 py-2 text-white border rounded-lg" style="background: #1e293b; border-color: #334155;" onfocus="this.style.borderColor='#22D3EE'" onblur="this.style.borderColor='#334155'"> <option value="">Select...</option> <option value="Asciutto">Asciutto</option> <option value="Bagnato">Bagnato</option> <option value="Umido">Umido</option> <option value="Misto">Misto</option> </select>
           </div>
          </div>
