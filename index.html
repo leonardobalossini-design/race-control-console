@@ -1291,17 +1291,17 @@ function triggerAIReport() {
          });
       },
 
-      // 4. VOCABOLARI (Questi restano fissi nel codice per ora)
+      // 4. VOCABOLARI 
       getActionTaxonomyVocab: () => {
         return Promise.resolve({
           success: true, 
-          data: ['PRE_GRID_CONTACT', 'START_PROCEDURE', 'LATE_BRAKING', 'OVERTAKE_ATTEMPT', 'TRACK_LIMITS', 'COLLISION', 'IMPEDING', 'TECHNICAL', 'UNSAFE_RELEASE']
+          data: ['PRE_GRID_CONTACT', 'START_PROCEDURE_VIOLATION', 'LATE_BRAKING_CONTACT', 'OVERTAKE_ATTEMPT', 'TRACK_LIMITS', 'CONTACT', 'DEFENSIVE_BLOCKING', 'PIT_LANE_SPEED_CHECK', 'RACE_LEAD_MANAGEMENT', 'CLOSE_BATTLE']
         });
       },
       getPenaltyCatalog: () => {
         return Promise.resolve({
           success: true, 
-          data: ['WARNING', 'LONG_LAP', 'DOUBLE_LONG_LAP', 'TIME_PENALTY', 'RIDE_THROUGH', 'DROP_POSITION', 'DISQUALIFICATION']
+          data: ['NO_FURTHER_ACTION', 'WARNING', 'DOUBLE_LONG_LAP',  'LONG_LAP_PENALTY', 'DROP_POSITION', 'TIME_PENALTY', 'RIDE_THROUGH', 'DISQUALIFICATION', 'PIT_LANE_START', 'BLACK_FLAG', 'START_FROM_PIT_LANE']
         });
       }
     };
