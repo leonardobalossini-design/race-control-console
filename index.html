@@ -730,6 +730,66 @@ function triggerAIReport() {
         </form>
        </div>
       </div>
+      <div id="ai_analysisTab" class="tab-content hidden space-y-8 animate-fade-in">
+  
+  <div class="border rounded-lg p-6 shadow-lg" style="background: #1e293b; border-color: #334155;">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-xl font-bold flex items-center gap-2" style="color: #22D3EE; font-family: 'Sora', sans-serif;">
+        <span>📜</span> Protocol Assistant History
+      </h3>
+      <span class="text-xs text-slate-400 border border-slate-600 px-2 py-1 rounded">Action -> Reaction Log</span>
+    </div>
+
+    <div class="overflow-x-auto rounded-lg border border-slate-700">
+      <table class="w-full text-left text-sm text-gray-400">
+        <thead class="text-xs uppercase" style="background: #0F172A; color: #94a3b8;">
+          <tr>
+            <th class="px-4 py-3">ID</th>
+            <th class="px-4 py-3">Action (Neutral)</th>
+            <th class="px-4 py-3">Recorded Reaction</th>
+            <th class="px-4 py-3">Regulatory Basis</th>
+          </tr>
+        </thead>
+        <tbody id="protocolTableBody" class="divide-y divide-slate-700">
+          </tbody>
+      </table>
+    </div>
+    <p id="protocolEmptyMsg" class="text-center py-8 text-slate-500 hidden">Nessun dato di protocollo disponibile per questo evento.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="border rounded-lg p-6 shadow-lg" style="background: #1e293b; border-color: #334155;">
+      <h3 class="text-lg font-bold mb-4 text-white flex items-center gap-2">
+        <span>🔥</span> Risk by Turn <span class="text-xs font-normal text-slate-400 ml-2">(Severity Heatmap)</span>
+      </h3>
+      <div id="heatmapTurnContainer" class="flex flex-wrap gap-3">
+        </div>
+      <p id="safetyEmptyMsg" class="text-center py-4 text-slate-500 text-sm hidden">Dati safety non disponibili.</p>
+    </div>
+
+    <div class="border rounded-lg p-6 shadow-lg" style="background: #1e293b; border-color: #334155;">
+      <h3 class="text-lg font-bold mb-4 text-white flex items-center gap-2">
+        <span>⏱️</span> Risk by Race Phase
+      </h3>
+      <div id="heatmapPhaseContainer" class="space-y-4">
+        </div>
+    </div>
+  </div>
+
+  <div class="border rounded-lg p-6 shadow-lg" style="background: #1e293b; border-color: #334155;">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-xl font-bold flex items-center gap-2" style="color: #a5b4fc; font-family: 'Sora', sans-serif;">
+        <span>⚖️</span> Regulatory Audit Log
+      </h3>
+      <span class="text-xs text-slate-400">AI Consistency Check</span>
+    </div>
+    
+    <div id="regulatoryCardsContainer" class="grid grid-cols-1 gap-3">
+      </div>
+    <p id="regulatoryEmptyMsg" class="text-center py-8 text-slate-500 hidden">Nessuna audit normativa disponibile.</p>
+  </div>
+
+</div>
      </div>
     </div>
    </div>
