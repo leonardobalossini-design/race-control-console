@@ -1754,6 +1754,34 @@ function renderAIAnalysis(event) {
   } else {
     regMsg.classList.remove('hidden');
   }
+ // --- 4. Executive Race Report Logic ---
+  const reportContainer = document.getElementById('aiReportContent');
+  
+  // A. RESET FONDAMENTALE: Pulisce il box prima di scrivere il nuovo report
+  // Questo risolve il problema dei report che si sommano
+  reportContainer.innerHTML = ''; 
+
+  // B. Recupero del testo
+  // N.B. Assicurati che nel tuo Foglio Google la colonna si chiami 'event_report' o 'final_output'
+  const rawReport = event.event_report || event.final_output || event.ai_report;
+
+  if (rawReport) {
+    // C. Formattazione: trasforma i "nuova riga" in tag HTML <br>
+    const formattedReport = rawReport.replace(/\n/g, '<br>');
+    
+    // Inserimento nel contenitore
+    const contentDiv = document.createElement('div');
+    contentDiv.className = "prose prose-invert max-w-none"; // Stile per testo lungo
+    contentDiv.innerHTML = formattedReport;
+    reportContainer.appendChild(contentDiv);
+    
+    // Salviamo l'evento corrente in una variabile globale per il download
+    window.currentEventForReport = event; 
+  } else {
+    // Messaggio di default se manca il report
+    reportContainer.innerHTML = '<p class="italic text-slate-500 text-center py-4">Report non ancora disponibile per questo evento.</p>';
+    window.currentEventForReport = null;
+  }
 }
    
    async function loadEvent(eventId) {
