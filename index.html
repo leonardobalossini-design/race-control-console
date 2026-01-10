@@ -1708,14 +1708,28 @@ function renderAIAnalysis(event) {
     safetyMsg.classList.remove('hidden');
   }
  
-  // --- 3. Regulatory Audit ---
+// --- 3. Regulatory Audit ---
   const regContainer = document.getElementById('regulatoryCardsContainer');
   const regMsg = document.getElementById('regulatoryEmptyMsg');
   regContainer.innerHTML = '';
 
   let regData = [];
   try {
-     if (event.ai_regulatory_json) regData = JSON.parse(event.ai_regulatory_json);
+     if (event.ai_regulatory_json) {
+        const parsed = JSON.parse(event.ai_regulatory_json);
+        
+        // --- CORREZIONE FONDAMENTALE ---
+        // Se il JSON è dentro un oggetto { "analysis": [...] }, prendiamo l'array interno.
+        // Se invece è già un array [...] (formato vecchio), lo usiamo direttamente.
+        if (parsed.analysis && Array.isArray(parsed.analysis)) {
+            regData = parsed.analysis;
+        } else if (Array.isArray(parsed)) {
+            regData = parsed;
+        } else {
+            // Fallback nel caso sia un singolo oggetto non in array
+            regData = [parsed];
+        }
+     }
   } catch(e) { console.error("Err parse regulatory", e); }
 
   if (regData && regData.length > 0) {
