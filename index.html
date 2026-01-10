@@ -1672,9 +1672,10 @@ function renderAIAnalysis(event) {
       });
     }
     
-    // B. Visualizzazione per FASE DI GARA (By Phase)
-    if (safetyData.by_race_phase) {
-      safetyData.by_race_phase.forEach(item => {
+ // B. Visualizzazione per FASE DI GARA (By Phase)
+    // CORREZIONE: Qui usiamo .by_phase (come nel JSON) e non .by_race_phase
+    if (safetyData.by_phase) { 
+      safetyData.by_phase.forEach(item => {
         const risk = item.risk_score || (item.count * (item.severity_index || 1));
         
         // Scala colore progress bar
