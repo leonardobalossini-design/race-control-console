@@ -2142,6 +2142,18 @@ document.getElementById('incidentForm').addEventListener('submit', async (e) => 
       }
     });
 
+   // Funzione per scaricare il report
+function downloadReport() {
+  // Controlla se abbiamo i dati dell'evento e se c'è un URL
+  if (window.currentEventForReport && window.currentEventForReport.report_url) {
+    // Apre il link in una nuova scheda
+    window.open(window.currentEventForReport.report_url, '_blank');
+  } else {
+    // Se il link non c'è (magari Make non ha ancora finito o la colonna è vuota)
+    showToast('Link al report non disponibile. Assicurati che Make abbia finito.', 'error');
+  }
+}
+   
 async function init() {
       document.getElementById('userInfo').textContent = 'User: Race Director';
 
