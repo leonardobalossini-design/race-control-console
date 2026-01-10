@@ -640,31 +640,33 @@ function triggerAIReport() {
   // 3. Recupera i dati dal form
   const form = document.getElementById('eventForm');
   
-const payload = {
+  // --- ECCO LA RIGA CHE MANCAVA! ---
+  // Dobbiamo leggere i valori dal box Top 10 prima di spedirli
+  const top10Array = getArrayValues('eventResultsArray'); 
+  // ---------------------------------
+  
+  const payload = {
     event_id: currentEventId,
     series: form.series.value || "Serie Sconosciuta",
     season: form.season.value || new Date().getFullYear(),
     event_name: form.event_name.value || "Evento Sconosciuto",
     session: form.session.value || "Gara",
     location: form.location.value || "",
-    weather: form.weather.value || "",           
+    weather: form.weather.value || "",            
     track_status: form.track_status.value || "", 
-    results_top10: top10Array,                   
+    results_top10: top10Array,                    // Ora questa variabile esiste!
     timestamp: new Date().toISOString()
   };
 
-  // 4. CHIAMATA LATO SERVER (QUERSTA È LA SOLUZIONE DEFINITIVA)
-  // Chiama la funzione "callMakeWebhook" che hai messo nel file Code.gs
+  // 4. CHIAMATA LATO SERVER
   google.script.run
     .withSuccessHandler(function(response) {
        showToast('Dati inviati a Make con successo!', 'success');
-       // Nascondi spinner
        if(document.getElementById('aiReportBtn')) showLoading('aiReportBtn', false);
     })
     .withFailureHandler(function(error) {
        console.error('Errore Server:', error);
        showToast('Errore nell\'invio: ' + error.message, 'error');
-       // Nascondi spinner
        if(document.getElementById('aiReportBtn')) showLoading('aiReportBtn', false);
     })
     .callMakeWebhook(payload);
