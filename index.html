@@ -637,23 +637,33 @@ function triggerAIReport() {
 
   showToast('Richiesta inviata all\'AI...', 'success');
 
-  // 👇👇👇 INCOLLA QUI IL TUO LINK WEBHOOK DI Make 👇👇👇
-  const n8nWebhookURL = "https://hook.eu1.make.com/jiin2bwqnj7r73dka2q4c5z59j5bws7e"; 
+  // 3. Recupera i dati di contesto dal form (COSI' L'AI SA COSA ANALIZZARE)
+  const form = document.getElementById('eventForm');
+  
+  const payload = {
+    event_id: currentEventId,
+    series: form.series.value || "Unknown Series",
+    season: form.season.value || new Date().getFullYear(),
+    event_name: form.event_name.value || "Unknown Event",
+    session: form.session.value || "Race",
+    location: form.location.value || "",
+    timestamp: new Date().toISOString()
+  };
 
-  // 4. Invia i dati a n8n
-  fetch(n8nWebhookURL, {
+  // 👇👇👇 IL TUO LINK WEBHOOK DI Make 👇👇👇
+  const makeWebhookURL = "https://hook.eu1.make.com/jiin2bwqnj7r73dka2q4c5z59j5bws7e"; 
+
+  // 4. Invia i dati a Make
+  fetch(makeWebhookURL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ 
-      event_id: currentEventId,
-      timestamp: new Date().toISOString()
-    })
+    body: JSON.stringify(payload)
   })
   .then(response => {
     if(response.ok) {
-      showToast('Report in elaborazione! Controlla n8n.', 'success');
+      showToast('Report in elaborazione! L\'AI sta analizzando i dati.', 'success');
     } else {
-      showToast('Errore di connessione con n8n.', 'error');
+      showToast('Errore di connessione con Make.', 'error');
     }
   })
   .catch(error => {
