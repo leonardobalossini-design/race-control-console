@@ -2008,12 +2008,22 @@ function renderAIAnalysis(event) {
       }
     }
 
-    document.getElementById('incidentForm').addEventListener('submit', async (e) => {
+document.getElementById('incidentForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       showLoading('incidentSubmit', true);
 
       const formData = new FormData(e.target);
+      
+      // RECUPERO DATI DAL FORM
       const incidentData = {
+        // 1. FORZIAMO L'EVENT ID (Così non viene perso)
+        event_id: currentEventId, 
+        
+        // 2. GESTIONE INCIDENT ID (Fondamentale per l'Edit)
+        // Se stiamo modificando (currentIncidentId esiste), lo usiamo.
+        // Altrimenti lasciamo null/vuoto e il server ne creerà uno nuovo.
+        incident_id: currentIncidentId ? currentIncidentId : (formData.get('incident_id') || null),
+
         timestamp: formData.get('timestamp'),
         lap: formData.get('lap') || null,
         turn: formData.get('turn'),
@@ -2027,9 +2037,15 @@ function renderAIAnalysis(event) {
       };
 
       let result;
+      // La logica qui è semplificata: chiamiamo sempre API.createIncident 
+      // (che lato server fa saveIncident e gestisce sia create che update)
+      // Passiamo currentEventId solo per sicurezza, ma incidentData lo contiene già.
+      
       if (currentIncidentId) {
+        // EDIT MODE
         result = await API.updateIncident(currentIncidentId, incidentData);
       } else {
+        // CREATE MODE
         result = await API.createIncident(currentEventId, incidentData);
       }
 
@@ -2038,7 +2054,7 @@ function renderAIAnalysis(event) {
       if (result.success) {
         showToast('Incident saved successfully!');
         closeIncidentModal();
-        await loadIncidents();
+        await loadIncidents(); // Ricarica la lista per vedere le modifiche
       } else {
         showToast('Error saving incident', 'error');
       }
