@@ -640,13 +640,16 @@ function triggerAIReport() {
   // 3. Recupera i dati dal form
   const form = document.getElementById('eventForm');
   
-  const payload = {
+const payload = {
     event_id: currentEventId,
     series: form.series.value || "Serie Sconosciuta",
     season: form.season.value || new Date().getFullYear(),
     event_name: form.event_name.value || "Evento Sconosciuto",
     session: form.session.value || "Gara",
     location: form.location.value || "",
+    weather: form.weather.value || "",           
+    track_status: form.track_status.value || "", 
+    results_top10: top10Array,                   
     timestamp: new Date().toISOString()
   };
 
