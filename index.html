@@ -1023,6 +1023,89 @@ function triggerAIReport() {
           </div>
         </section>
 
+       <section class="rounded-2xl p-8 shadow-2xl border" style="background: #0F172A; border-color: #334155;">
+          <h3 class="text-2xl font-bold mb-6 pb-4 border-b" style="font-family: 'Sora', sans-serif; color: #a5b4fc; border-color: #1e293b;">6. AI ECOSYSTEM (Analisi Avanzata)</h3>
+          <p class="text-slate-400 mb-6 italic">Il sistema processa i dati grezzi per fornire intelligence operativa e giuridica a fine sessione.</p>
+
+          <div class="space-y-8">
+            
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 mt-1">
+                <span class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-700 bg-slate-900 text-cyan-400 font-bold">A</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-lg">Protocol Assistant History</h4>
+                <p class="text-slate-400 text-sm mb-2">
+                  È il "Registro di Bordo" automatico. Verifica che ad ogni <strong>Azione</strong> (Incidente) corrisponda una <strong>Reazione</strong> (Decisione) registrata.
+                </p>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                  <div class="p-2 bg-slate-900 rounded border border-slate-700">
+                    <span class="text-green-400 font-bold block">VERDE</span>
+                    <span class="text-slate-500">Ciclo chiuso (Incidente sanzionato/notato).</span>
+                  </div>
+                  <div class="p-2 bg-slate-900 rounded border border-slate-700">
+                    <span class="text-slate-400 font-bold block">GRIGIO</span>
+                    <span class="text-slate-500">No Action / In attesa.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 mt-1">
+                <span class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-700 bg-slate-900 text-yellow-400 font-bold">B</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-lg">Safety Heatmaps (Risk Analysis)</h4>
+                <p class="text-slate-400 text-sm mb-2">
+                  Visualizzazione grafica del rischio cumulativo calcolato come: <em class="text-slate-300">Frequenza × Severità</em>.
+                </p>
+                <ul class="list-disc list-inside text-sm text-slate-400 space-y-1">
+                  <li><strong class="text-slate-200">By Turn:</strong> Identifica le curve critiche (es. Curva 10 ha avuto 3 crash HIGH).</li>
+                  <li><strong class="text-slate-200">By Phase:</strong> Identifica i momenti critici (es. "Partenza" vs "Ultimi giri").</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 mt-1">
+                <span class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-700 bg-slate-900 text-indigo-400 font-bold">C</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-lg">Regulatory Audit Log</h4>
+                <p class="text-slate-400 text-sm mb-3">
+                  L'AI agisce come "Giudice Ombra" confrontando le decisioni umane con il Regolamento e i Precedenti storici.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="p-3 rounded border border-emerald-900/50 bg-emerald-900/10">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                      <span class="font-bold text-emerald-400 text-xs uppercase">MATCHED</span>
+                    </div>
+                    <p class="text-xs text-slate-400">La decisione umana è pienamente conforme al regolamento.</p>
+                  </div>
+                  
+                  <div class="p-3 rounded border border-red-900/50 bg-red-900/10">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                      <span class="font-bold text-red-400 text-xs uppercase">DEVIATION</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Rilevata discrepanza (es. sanzione troppo lieva per la severità registrata).</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 p-4 rounded-lg bg-indigo-900/20 border border-indigo-500/30 text-center">
+              <p class="text-indigo-200 text-sm font-semibold">
+                ⚠️ NOTA: Il pulsante "Genera Report AI" appare nel Tab "Event" solo quando lo stato sessione è impostato su <span class="text-white bg-indigo-600 px-2 py-0.5 rounded text-xs">ENDED</span>.
+              </p>
+            </div>
+
+          </div>
+        </section>
+       
         <section class="text-center py-8">
           <h4 class="text-white font-bold tracking-widest uppercase mb-6 text-sm opacity-50">Principi Fondamentali</h4>
           <div class="flex flex-wrap justify-center gap-4">
