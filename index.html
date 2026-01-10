@@ -633,44 +633,37 @@ function triggerAIReport() {
   }
 
   // 2. Conferma utente
-  if(!confirm('Vuoi generare il report AI per: ' + currentEventId + '?')) return;
+  if(!confirm('Vuoi generare il report AI per l\'evento: ' + currentEventId + '?')) return;
 
-  showToast('Richiesta inviata all\'AI...', 'success');
+  showToast('Invio richiesta al server...', 'info');
+  showLoading('aiReportBtn', true); // Opzionale: se vuoi mostrare un caricamento visivo
 
-  // 3. Recupera i dati di contesto dal form (COSI' L'AI SA COSA ANALIZZARE)
+  // 3. Recupera i dati dal form
   const form = document.getElementById('eventForm');
   
   const payload = {
     event_id: currentEventId,
-    series: form.series.value || "Unknown Series",
+    series: form.series.value || "Serie Sconosciuta",
     season: form.season.value || new Date().getFullYear(),
-    event_name: form.event_name.value || "Unknown Event",
-    session: form.session.value || "Race",
+    event_name: form.event_name.value || "Evento Sconosciuto",
+    session: form.session.value || "Gara",
     location: form.location.value || "",
     timestamp: new Date().toISOString()
   };
 
-  // 👇👇👇 IL TUO LINK WEBHOOK DI Make 👇👇👇
-  const makeWebhookURL = "https://hook.eu1.make.com/jiin2bwqnj7r73dka2q4c5z59j5bws7e"; 
-
-  // 4. Invia i dati a Make
-  fetch(makeWebhookURL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  })
-  .then(response => {
-    if(response.ok) {
-      showToast('Report in elaborazione! L\'AI sta analizzando i dati.', 'success');
-    } else {
-      showToast('Errore di connessione con Make.', 'error');
-    }
-  })
-  .catch(error => {
-    console.error('Errore:', error);
-    // CORS potrebbe dare un falso errore in console, ma la richiesta parte lo stesso
-    showToast('Richiesta partita.', 'success'); 
-  });
+  // 4. CHIAMATA LATO SERVER (Bypassa i blocchi CORS)
+  // Nota: "callMakeWebhook" è il nome della funzione che hai messo in Code.gs
+  google.script.run
+    .withSuccessHandler(function(response) {
+       showToast('Dati inviati a Make con successo!', 'success');
+       // showLoading('aiReportBtn', false);
+    })
+    .withFailureHandler(function(error) {
+       console.error('Errore Server:', error);
+       showToast('Errore nell\'invio: ' + error.message, 'error');
+       // showLoading('aiReportBtn', false);
+    })
+    .callMakeWebhook(payload);
 }
 </script>
         </form>
