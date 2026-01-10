@@ -740,6 +740,13 @@ function triggerAIReport() {
       </div>
       
       <div id="ai_analysisTab" class="tab-content hidden space-y-8 animate-fade-in">
+
+       <div class="flex justify-center mb-6">
+     <button id="aiReportBtn" type="button" onclick="triggerAIReport()" class="hidden px-8 py-4 font-bold text-lg rounded-xl transition flex items-center gap-3 shadow-2xl border border-indigo-500/50 hover:scale-105" style="background: #1e1b4b; color: #a5b4fc; box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);" onmouseover="this.style.background='#312e81'" onmouseout="this.style.background='#1e1b4b'">
+       <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+       <span>Genera Report AI di Fine Sessione</span>
+     </button>
+  </div>
         
         <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 mb-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
