@@ -1913,7 +1913,7 @@ function renderAIAnalysis(event) {
     });
   } else if(regMsg) { regMsg.classList.remove('hidden'); }
 
-  // --- 4. REPORT UFFICIALE (NUOVA INTESTAZIONE) ---
+  // --- 4. REPORT UFFICIALE (Carta Intestata) ---
   const reportContainer = document.getElementById('aiReportContent');
   if(reportContainer) {
     reportContainer.innerHTML = ''; 
@@ -1935,6 +1935,7 @@ function renderAIAnalysis(event) {
         <div class="px-10 pb-10 prose prose-slate max-w-none text-sm leading-relaxed font-sans text-justify text-slate-800">${formattedReport}</div>
         <div class="px-10 pb-12 pt-4 flex justify-end"><div class="text-center w-48"><div class="h-px bg-slate-400 mb-2 w-full"></div><span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Il Direttore di Gara</span></div></div>
       `;
+
       reportContainer.appendChild(contentDiv);
       reportContainer.classList.remove('bg-slate-800/30', 'border', 'border-slate-700/50', 'text-slate-300');
       reportContainer.classList.add('bg-transparent', 'border-0', 'p-0'); 
