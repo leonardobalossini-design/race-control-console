@@ -2144,38 +2144,46 @@ function renderAIAnalysis(event) {
         allIncidents = result.data;
         container.innerHTML = result.data.map(incident => `
           <div class="border rounded-lg p-4 transition" style="background: #1e293b; border-color: #334155;" onmouseover="this.style.borderColor='#22D3EE'; this.style.boxShadow='0 10px 30px rgba(34, 211, 238, 0.2)';" onmouseout="this.style.borderColor='#334155'; this.style.boxShadow='none';">
-            <div class="flex items-center justify-between">
-              <div class="flex-1">
-                <div class="flex items-center gap-3 mb-2">
+            
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+              
+              <div class="flex-1 w-full">
+                <div class="flex flex-wrap items-center gap-3 mb-2">
                   <span class="font-bold text-lg" style="color: #22D3EE; font-family: 'Sora', sans-serif;">${incident.incident_id}</span>
-                  <span class="px-3 py-1 rounded-full text-sm font-semibold ${
-                    incident.severity === 'HIGH' ? 'border' :
-                    incident.severity === 'MEDIUM' ? 'border' :
-                    'border'
-                  }" style="${
-                    incident.severity === 'HIGH' ? 'background: #7f1d1d; color: #fecaca; border-color: #991b1b;' :
-                    incident.severity === 'MEDIUM' ? 'background: #854d0e; color: #fef08a; border-color: #a16207;' :
-                    'background: #14532d; color: #bbf7d0; border-color: #166534;'
+                  
+                  <span class="px-3 py-1 rounded-full text-xs font-bold border uppercase tracking-wide ${
+                    incident.severity === 'HIGH' ? 'bg-red-900 text-red-200 border-red-700' :
+                    incident.severity === 'MEDIUM' ? 'bg-yellow-900 text-yellow-200 border-yellow-700' :
+                    'bg-emerald-900 text-emerald-200 border-emerald-700'
                   }">${incident.severity}</span>
-                  <span style="color: #CBD5E1;">${incident.timestamp}</span>
-                  ${incident.lap ? `<span class="text-sm" style="color: #94a3b8;">Lap ${incident.lap}</span>` : ''}
+                  
+                  <span class="text-sm text-slate-400 font-mono">${incident.timestamp}</span>
+                  ${incident.lap ? `<span class="text-xs text-slate-500 border border-slate-700 px-2 py-0.5 rounded">L${incident.lap}</span>` : ''}
                 </div>
-                <p style="color: #e2e8f0;">${incident.description_neutral || 'No description'}</p>
-                <div class="flex gap-4 mt-2 text-sm" style="color: #94a3b8;">
-                  ${incident.race_phase ? `<span>Phase: ${incident.race_phase}</span>` : ''}
-                  ${incident.action_taxonomy ? `<span>Action: ${incident.action_taxonomy}</span>` : ''}
+                
+                <p class="text-slate-300 text-sm leading-relaxed mb-3">${incident.description_neutral || 'No description'}</p>
+                
+                <div class="flex flex-wrap gap-3 text-xs text-slate-500 uppercase tracking-wider font-semibold">
+                  ${incident.race_phase ? `<span class="bg-slate-800 px-2 py-1 rounded border border-slate-700">Phase: ${incident.race_phase}</span>` : ''}
+                  ${incident.action_taxonomy ? `<span class="bg-slate-800 px-2 py-1 rounded border border-slate-700 text-cyan-400">Action: ${incident.action_taxonomy}</span>` : ''}
                 </div>
+                
                 ${incident.riders_involved && parseArrayField(incident.riders_involved).length > 0 ? 
-                  `<p class="text-sm mt-2" style="color: #94a3b8;">Riders: ${parseArrayField(incident.riders_involved).join(', ')}</p>` : ''}
+                  `<div class="mt-3 text-xs text-slate-400 flex items-center gap-2">
+                     <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                     <span>${parseArrayField(incident.riders_involved).join(', ')}</span>
+                   </div>` : ''}
               </div>
-              <div class="flex gap-2">
-                <button onclick="editIncident('${incident.incident_id}')" class="px-4 py-2 rounded-lg font-semibold border transition" style="background: #6366F1; color: white; border-color: #6366F1;" onmouseover="this.style.background='#4f46e5'" onmouseout="this.style.background='#6366F1'">
+
+              <div class="flex flex-row md:flex-col gap-2 w-full md:w-auto mt-2 md:mt-0">
+                <button onclick="editIncident('${incident.incident_id}')" class="flex-1 md:flex-none px-4 py-2 text-sm font-bold rounded-lg border transition text-center shadow-lg hover:shadow-indigo-500/20" style="background: #4f46e5; color: white; border-color: #4338ca;">
                   Edit
                 </button>
-                <button onclick="deleteIncidentConfirm('${incident.incident_id}')" class="px-4 py-2 rounded-lg font-semibold border transition" style="background: #7f1d1d; color: #fecaca; border-color: #991b1b;" onmouseover="this.style.background='#991b1b'" onmouseout="this.style.background='#7f1d1d'">
+                <button onclick="deleteIncidentConfirm('${incident.incident_id}')" class="flex-1 md:flex-none px-4 py-2 text-sm font-bold rounded-lg border transition text-center shadow-lg hover:shadow-red-500/20" style="background: #7f1d1d; color: #fecaca; border-color: #991b1b;">
                   Delete
                 </button>
               </div>
+
             </div>
           </div>
         `).join('');
