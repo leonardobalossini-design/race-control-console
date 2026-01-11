@@ -1808,173 +1808,82 @@ async function loadEventSelector() {
       }
     });
 
-// --- FUNZIONE DI RENDERING AI ANALYSIS ---
+// --- FUNZIONE DI RENDERING AI ANALYSIS (Carta Intestata) ---
 function renderAIAnalysis(event) {
   console.log("Rendering AI Analysis for:", event.event_id);
 
-  // --- 1. Protocollo ---
+  // --- 1. Protocollo (Logica Esistente) ---
   const protocolBody = document.getElementById('protocolTableBody');
   const protocolMsg = document.getElementById('protocolEmptyMsg');
-  protocolBody.innerHTML = '';
-  
+  if(protocolBody) protocolBody.innerHTML = '';
   let protocolData = [];
-  try {
-    if (event.ai_protocol_json) protocolData = JSON.parse(event.ai_protocol_json);
-  } catch(e) { console.error("Err parse protocol", e); }
+  try { if (event.ai_protocol_json) protocolData = JSON.parse(event.ai_protocol_json); } catch(e) {}
   
-  if (protocolData && protocolData.length > 0) {
+  if (protocolData && protocolData.length > 0 && protocolBody) {
     protocolMsg.classList.add('hidden');
     protocolData.forEach(row => {
       const tr = document.createElement('tr');
       tr.className = "hover:bg-slate-800 transition-colors";
-      tr.innerHTML = `
-        <td class="px-4 py-3 font-mono text-xs text-cyan-400 font-bold">${row.incident_id || '-'}</td>
-        <td class="px-4 py-3 text-slate-300">${row.action_description_neutral || row.action_taxonomy || '-'}</td>
-        <td class="px-4 py-3 font-semibold ${row.reaction_recorded ? 'text-green-400' : 'text-slate-500 italic'}">
-          ${row.reaction_recorded || 'No Action'}
-        </td>
-        <td class="px-4 py-3 italic text-xs text-slate-400">${row.regulatory_basis || '-'}</td>
-      `;
+      tr.innerHTML = `<td class="px-4 py-3 font-mono text-xs text-cyan-400 font-bold">${row.incident_id||'-'}</td><td class="px-4 py-3 text-slate-300">${row.action_description_neutral||row.action_taxonomy||'-'}</td><td class="px-4 py-3 font-semibold ${row.reaction_recorded?'text-green-400':'text-slate-500 italic'}">${row.reaction_recorded||'No Action'}</td><td class="px-4 py-3 italic text-xs text-slate-400">${row.regulatory_basis||'-'}</td>`;
       protocolBody.appendChild(tr);
     });
-  } else {
-    protocolMsg.classList.remove('hidden');
-  }
+  } else if(protocolMsg) { protocolMsg.classList.remove('hidden'); }
 
-  // --- 2. Safety Heatmap (PROFESSIONAL VERSION) ---
+  // --- 2. Safety Heatmap (Logica Esistente) ---
   const turnContainer = document.getElementById('heatmapTurnContainer');
   const phaseContainer = document.getElementById('heatmapPhaseContainer');
   const safetyMsg = document.getElementById('safetyEmptyMsg');
-  turnContainer.innerHTML = '';
-  phaseContainer.innerHTML = '';
-  
+  if(turnContainer) turnContainer.innerHTML = '';
+  if(phaseContainer) phaseContainer.innerHTML = '';
   let safetyData = null;
-  try {
-     if (event.ai_safety_json) safetyData = JSON.parse(event.ai_safety_json);
-  } catch(e) { console.error("Err parse safety", e); }
+  try { if (event.ai_safety_json) safetyData = JSON.parse(event.ai_safety_json); } catch(e) {}
 
-  if (safetyData) {
+  if (safetyData && turnContainer) {
     safetyMsg.classList.add('hidden');
-    
-    // A. Visualizzazione per CURVA (By Turn)
     if (safetyData.by_turn) {
       safetyData.by_turn.forEach(item => {
-        // Calcolo Risk Score
         const risk = item.risk_score || (item.count * (item.severity_index || 1));
-        
-        // Logica Professionale: Colore del testo e del bordo
-        let riskTextColor = 'text-slate-200';   // Default (Bianco/Grigio chiaro)
-        let borderColor = 'border-slate-600';   // Default border
-        let glowClass = '';
-
-        if (risk > 8) {
-            // ALTO RISCHIO -> ROSSO
-            riskTextColor = 'text-red-500'; 
-            borderColor = 'border-red-500';
-            glowClass = 'shadow-[0_0_15px_rgba(239,68,68,0.15)]'; // Alone rosso leggero
-        } else if (risk >= 4) {
-            // MEDIO RISCHIO -> GIALLO
-            riskTextColor = 'text-yellow-400'; 
-            borderColor = 'border-yellow-500';
-        }
-
+        let riskTextColor = risk > 8 ? 'text-red-500' : (risk >= 4 ? 'text-yellow-400' : 'text-slate-200');
+        let borderColor = risk > 8 ? 'border-red-500' : (risk >= 4 ? 'border-yellow-500' : 'border-slate-600');
         const badge = document.createElement('div');
-        // Sfondo scuro pulito (bg-slate-800) invece dei colori pieni
-        badge.className = `border px-4 py-3 rounded-lg flex flex-col items-center justify-center min-w-[90px] bg-slate-800 transition-transform hover:scale-105 ${borderColor} ${glowClass}`;
-        
-        badge.innerHTML = `
-          <span class="text-[9px] font-bold opacity-50 uppercase tracking-widest text-slate-300">TURN</span>
-          
-          <span class="text-3xl font-bold leading-none text-white my-1">${item.turn}</span>
-          
-          <div class="w-full h-px bg-slate-700 my-2"></div>
-          
-          <div class="flex flex-col items-center w-full">
-             <div class="flex justify-between w-full text-[10px] text-slate-400 mb-1">
-               <span>Events</span>
-               <span class="text-white font-mono">${item.count}</span>
-             </div>
-             
-             <div class="flex justify-between w-full text-xs font-bold items-center bg-slate-900/50 px-2 py-1 rounded">
-               <span class="text-slate-500 text-[9px] uppercase mr-2">Risk</span>
-               <span class="font-mono ${riskTextColor}">${risk}</span>
-             </div>
-          </div>
-        `;
+        badge.className = `border px-4 py-3 rounded-lg flex flex-col items-center justify-center min-w-[90px] bg-slate-800 transition-transform hover:scale-105 ${borderColor}`;
+        badge.innerHTML = `<span class="text-[9px] font-bold opacity-50 uppercase tracking-widest text-slate-300">TURN</span><span class="text-3xl font-bold leading-none text-white my-1">${item.turn}</span><div class="w-full h-px bg-slate-700 my-2"></div><div class="flex flex-col items-center w-full"><div class="flex justify-between w-full text-[10px] text-slate-400 mb-1"><span>Events</span><span class="text-white font-mono">${item.count}</span></div><div class="flex justify-between w-full text-xs font-bold items-center bg-slate-900/50 px-2 py-1 rounded"><span class="text-slate-500 text-[9px] uppercase mr-2">Risk</span><span class="font-mono ${riskTextColor}">${risk}</span></div></div>`;
         turnContainer.appendChild(badge);
       });
     }
-    
- // B. Visualizzazione per FASE DI GARA (By Phase)
-    // CORREZIONE: Qui usiamo .by_phase (come nel JSON) e non .by_race_phase
-    if (safetyData.by_phase) { 
+    if (safetyData.by_phase && phaseContainer) { 
       safetyData.by_phase.forEach(item => {
         const risk = item.risk_score || (item.count * (item.severity_index || 1));
-        
-        // Scala colore progress bar
-        let barColor = 'bg-slate-500';
-        if (risk >= 4) barColor = 'bg-yellow-500';
-        if (risk > 8) barColor = 'bg-red-500';
-
+        let barColor = risk > 8 ? 'bg-red-500' : (risk >= 4 ? 'bg-yellow-500' : 'bg-slate-500');
         const div = document.createElement('div');
         div.className = "flex items-center justify-between text-sm mb-3";
         const width = Math.min(100, (risk / 15) * 100); 
-        
-        div.innerHTML = `
-          <div class="w-32">
-             <div class="text-slate-300 text-xs uppercase tracking-wider font-bold">${item.race_phase}</div>
-          </div>
-          <div class="flex-1 mx-3">
-            <div class="flex justify-between text-[10px] mb-1">
-               <span class="text-slate-500">Risk Level</span>
-               <span class="${risk > 8 ? 'text-red-400' : (risk >= 4 ? 'text-yellow-400' : 'text-slate-400')} font-mono font-bold">${risk}</span>
-            </div>
-            <div class="h-1.5 bg-slate-800 rounded-full overflow-hidden border border-slate-700/50">
-              <div class="h-full ${barColor} rounded-full transition-all duration-500" style="width: ${width}%"></div>
-            </div>
-          </div>
-        `;
+        div.innerHTML = `<div class="w-32"><div class="text-slate-300 text-xs uppercase tracking-wider font-bold">${item.race_phase}</div></div><div class="flex-1 mx-3"><div class="flex justify-between text-[10px] mb-1"><span class="text-slate-500">Risk Level</span><span class="${risk > 8 ? 'text-red-400' : (risk >= 4 ? 'text-yellow-400' : 'text-slate-400')} font-mono font-bold">${risk}</span></div><div class="h-1.5 bg-slate-800 rounded-full overflow-hidden border border-slate-700/50"><div class="h-full ${barColor} rounded-full transition-all duration-500" style="width: ${width}%"></div></div></div>`;
         phaseContainer.appendChild(div);
       });
     }
-  } else {
-    safetyMsg.classList.remove('hidden');
-  }
- 
-// --- 3. Regulatory Audit ---
+  } else if(safetyMsg) { safetyMsg.classList.remove('hidden'); }
+
+  // --- 3. Regulatory Audit (Logica Esistente) ---
   const regContainer = document.getElementById('regulatoryCardsContainer');
   const regMsg = document.getElementById('regulatoryEmptyMsg');
-  regContainer.innerHTML = '';
-
+  if(regContainer) regContainer.innerHTML = '';
   let regData = [];
   try {
      if (event.ai_regulatory_json) {
-        const parsed = JSON.parse(event.ai_regulatory_json);
-        
-        // --- CORREZIONE FONDAMENTALE ---
-        // Se il JSON è dentro un oggetto { "analysis": [...] }, prendiamo l'array interno.
-        // Se invece è già un array [...] (formato vecchio), lo usiamo direttamente.
-        if (parsed.analysis && Array.isArray(parsed.analysis)) {
-            regData = parsed.analysis;
-        } else if (Array.isArray(parsed)) {
-            regData = parsed;
-        } else {
-            // Fallback nel caso sia un singolo oggetto non in array
-            regData = [parsed];
-        }
+       const parsed = JSON.parse(event.ai_regulatory_json);
+       if (parsed.analysis && Array.isArray(parsed.analysis)) regData = parsed.analysis;
+       else if (Array.isArray(parsed)) regData = parsed;
+       else regData = [parsed];
      }
-  } catch(e) { console.error("Err parse regulatory", e); }
+  } catch(e) {}
 
-  if (regData && regData.length > 0) {
+  if (regData && regData.length > 0 && regContainer) {
     regMsg.classList.add('hidden');
     regData.forEach(item => {
-      // Gestione struttura nidificata o piatta
       const d = item.json || item; 
-
       const isMatch = d.match_status === 'MATCHED';
-      const isConsistent = d.precedent_consistency === 'ALIGNED';
       const isDiff = d.precedent_consistency === 'DIFFERENT';
-      
       let borderClass = isMatch ? 'border-l-4 border-l-emerald-500' : 'border-l-4 border-l-red-500';
       if (isMatch && isDiff) borderClass = 'border-l-4 border-l-yellow-500';
 
@@ -1983,74 +1892,91 @@ function renderAIAnalysis(event) {
       
       card.innerHTML = `
         <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-3 mb-3">
-          
           <div class="flex-1 w-full">
             <div class="flex flex-col sm:flex-row sm:items-baseline gap-2">
-                <span class="font-mono text-sm font-bold text-white bg-slate-900 px-2 py-0.5 rounded border border-slate-600 whitespace-nowrap self-start">
-                  ${d.incident_id}
-                </span>
-                <span class="text-xs text-slate-300 uppercase tracking-wide leading-relaxed font-medium">
-                  ${d.action_taxonomy}
-                </span>
+                <span class="font-mono text-sm font-bold text-white bg-slate-900 px-2 py-0.5 rounded border border-slate-600 whitespace-nowrap self-start">${d.incident_id}</span>
+                <span class="text-xs text-slate-300 uppercase tracking-wide leading-relaxed font-medium">${d.action_taxonomy}</span>
             </div>
           </div>
-
           <div class="flex flex-wrap gap-2 self-start md:self-auto mt-1 md:mt-0">
              ${isDiff ? '<span class="px-2 py-0.5 rounded bg-yellow-900 text-yellow-200 text-[10px] font-bold border border-yellow-700 uppercase whitespace-nowrap">⚠️ Deviation</span>' : ''}
-             <span class="px-2 py-0.5 rounded text-[10px] font-bold border uppercase whitespace-nowrap ${isMatch ? 'bg-emerald-900 text-emerald-200 border-emerald-700' : 'bg-red-900 text-red-200 border-red-700'}">
-               ${d.match_status}
-             </span>
+             <span class="px-2 py-0.5 rounded text-[10px] font-bold border uppercase whitespace-nowrap ${isMatch ? 'bg-emerald-900 text-emerald-200 border-emerald-700' : 'bg-red-900 text-red-200 border-red-700'}">${d.match_status}</span>
           </div>
-
         </div>
-        
         <div class="grid grid-cols-2 gap-4 text-sm mb-3 bg-slate-900 bg-opacity-50 p-2 rounded">
-           <div>
-             <span class="block text-slate-500 text-[10px] uppercase">AI Recommendation</span>
-             <span class="text-white font-mono text-xs">${d.recommended_decision || 'N/A'}</span>
-           </div>
-           <div>
-             <span class="block text-slate-500 text-[10px] uppercase">Confidence</span>
-             <span class="text-cyan-400 font-bold text-xs">${d.confidence || '-'}</span>
-           </div>
+           <div><span class="block text-slate-500 text-[10px] uppercase">AI Recommendation</span><span class="text-white font-mono text-xs">${d.recommended_decision || 'N/A'}</span></div>
+           <div><span class="block text-slate-500 text-[10px] uppercase">Confidence</span><span class="text-cyan-400 font-bold text-xs">${d.confidence || '-'}</span></div>
         </div>
-        
-        <p class="text-xs text-slate-400 leading-relaxed italic border-t border-slate-700 pt-2 mt-2">
-          "${d.rationale_short || d.rationale || 'No rationale.'}"
-        </p>
+        <p class="text-xs text-slate-400 leading-relaxed italic border-t border-slate-700 pt-2 mt-2">"${d.rationale_short || d.rationale || 'No rationale.'}"</p>
       `;
       regContainer.appendChild(card);
     });
-  } else {
-    regMsg.classList.remove('hidden');
-  }
- // --- 4. Executive Race Report Logic ---
+  } else if(regMsg) { regMsg.classList.remove('hidden'); }
+
+  // --- 4. REPORT UFFICIALE (NUOVA INTESTAZIONE) ---
   const reportContainer = document.getElementById('aiReportContent');
-  
-  // A. RESET FONDAMENTALE: Pulisce il box prima di scrivere il nuovo report
-  // Questo risolve il problema dei report che si sommano
-  reportContainer.innerHTML = ''; 
+  if(reportContainer) {
+    reportContainer.innerHTML = ''; 
 
-  // B. Recupero del testo
-  // N.B. Assicurati che nel tuo Foglio Google la colonna si chiami 'event_report' o 'final_output'
-  const rawReport = event.event_report || event.final_output || event.ai_report;
+    // Recupera il testo dell'evento CORRENTE (Logica Invariata)
+    const rawReport = event.event_report || event.final_output || event.ai_report;
 
-  if (rawReport) {
-    // C. Formattazione: trasforma i "nuova riga" in tag HTML <br>
-    const formattedReport = rawReport.replace(/\n/g, '<br>');
-    
-    // Inserimento nel contenitore
-    const contentDiv = document.createElement('div');
-    contentDiv.className = "prose prose-invert max-w-none"; // Stile per testo lungo
-    contentDiv.innerHTML = formattedReport;
-    reportContainer.appendChild(contentDiv);
-    
-    // Salviamo l'evento corrente in una variabile globale per il download
-    window.currentEventForReport = event; 
-  } else {
-    // Messaggio di default se manca il report
-    reportContainer.innerHTML = '<p class="italic text-slate-500 text-center py-4">Report non ancora disponibile per questo evento.</p>';
-    window.currentEventForReport = null;
+    if (rawReport) {
+      // Se c'è un report, costruiamo il "Foglio Carta Intestata"
+      const formattedReport = rawReport.replace(/\n/g, '<br>');
+      
+      // La tua nuova intestazione
+      const headerImageUrl = "https://lh3.googleusercontent.com/d/1MhP3bxy_f47nkk0ZAeYRzGHSxUsPQa-5=w2000?authuser=0"; 
+
+      const contentDiv = document.createElement('div');
+      
+      // Stile "Foglio A4"
+      contentDiv.className = "bg-white text-slate-900 rounded-lg overflow-hidden shadow-2xl mx-auto max-w-4xl border border-slate-200";
+      
+      contentDiv.innerHTML = `
+        <div class="w-full">
+           <img src="${headerImageUrl}" alt="Intestazione CIV" referrerpolicy="no-referrer" style="width: 100%; height: auto; display: block; object-fit: cover;">
+        </div>
+
+        <div class="bg-gray-100 text-gray-600 px-8 py-2 flex justify-between items-center text-[10px] uppercase font-bold tracking-widest border-b border-gray-200">
+           <span>Pag. 01/01</span>
+           <span>Race Control Report • Ver 1.0</span>
+        </div>
+
+        <div class="px-8 pt-8 pb-4 text-center">
+           <h1 class="text-3xl font-black text-slate-800 uppercase tracking-tight mb-1" style="font-family: 'Sora', sans-serif;">
+              ${event.event_name || 'EVENTO'}
+           </h1>
+           <p class="text-sm font-bold text-slate-500 uppercase tracking-widest">
+              ${event.series || ''} ${event.season || ''} | ${event.location || ''}
+           </p>
+        </div>
+
+        <div class="px-10 pb-10 prose prose-slate max-w-none text-sm leading-relaxed font-sans text-justify text-slate-800">
+           ${formattedReport}
+        </div>
+        
+        <div class="px-10 pb-12 pt-4 flex justify-end">
+           <div class="text-center w-48">
+              <div class="h-px bg-slate-400 mb-2 w-full"></div> 
+              <span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Il Direttore di Gara</span>
+           </div>
+        </div>
+      `;
+
+      reportContainer.appendChild(contentDiv);
+      
+      // Rimuove lo stile scuro del contenitore padre
+      reportContainer.classList.remove('bg-slate-800/30', 'border', 'border-slate-700/50', 'text-slate-300');
+      reportContainer.classList.add('bg-transparent', 'border-0', 'p-0'); 
+
+      window.currentEventForReport = event; 
+    } else {
+      // Se NON c'è ancora un report (Nuovo evento), mostra il box "In Attesa" scuro
+      reportContainer.className = "min-h-[100px] bg-slate-800/30 rounded-xl p-6 border border-slate-700/50 text-slate-300 text-sm leading-relaxed font-sans";
+      reportContainer.innerHTML = '<div class="flex flex-col items-center justify-center py-8 opacity-60"><svg class="w-10 h-10 mb-3 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg><p class="italic text-slate-500">Report non ancora generato. Clicca il pulsante in alto.</p></div>';
+      window.currentEventForReport = null;
+    }
   }
 }
    
