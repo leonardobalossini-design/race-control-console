@@ -2628,10 +2628,15 @@ function initSidebarToggle() {
             <div class="text-white font-bold mb-1">${riders}</div>
             <div class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 border border-slate-700 text-cyan-400 uppercase tracking-wide">${taxonomy}</div>
           </td>
-          <td class="px-6 py-4">
-            <div class="text-sm text-slate-300 line-clamp-2 group-hover:line-clamp-none transition-all duration-300" title="${desc}">${desc}</div>
+         <td class="px-6 py-4">
+            <div 
+              class="text-sm text-slate-300 line-clamp-2 group-hover:line-clamp-none cursor-pointer transition-all duration-300" 
+              onclick="this.classList.toggle('line-clamp-2')" 
+              title="Tocca per espandere">
+              ${desc}
+            </div>
           </td>
-          <td class="px-6 py-4 whitespace-nowrap">
+        <td class="px-6 py-4 whitespace-nowrap">
             <span class="px-3 py-1.5 rounded-lg text-xs font-bold border uppercase shadow-sm ${badgeStyle}">${reaction}</span>
           </td>
           <td class="px-6 py-4 text-xs font-mono text-slate-500 w-32 truncate" title="${regBasis}">${regBasis}</td>
