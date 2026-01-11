@@ -2318,30 +2318,56 @@ async function init() {
 
       initSidebarToggle();
       
-      // --- LOGICA NAVIGAZIONE SIDEBAR ---
+      // --- LOGICA NAVIGAZIONE SIDEBAR (AGGIORNATA) ---
       const consoleSection = document.getElementById('console');
       const guideSection = document.getElementById('guideView');
-      const appShell = document.getElementById('appShell');
+      const databaseSection = document.getElementById('databaseView'); // NUOVO
+      
       const btnConsole = document.getElementById('navConsole');
       const btnGuide = document.getElementById('navGuide');
+      const btnDatabase = document.getElementById('navDatabase'); // NUOVO
+      const appShell = document.getElementById('appShell');
+
+      // Funzione helper per nascondere tutto e resettare i bottoni
+      function resetViews() {
+        consoleSection.classList.add('hidden');
+        guideSection.classList.add('hidden');
+        if(databaseSection) databaseSection.classList.add('hidden');
+
+        if(btnConsole) btnConsole.classList.remove('active');
+        if(btnGuide) btnGuide.classList.remove('active');
+        if(btnDatabase) btnDatabase.classList.remove('active');
+        
+        if(appShell) appShell.scrollIntoView({ behavior: 'smooth' });
+      }
 
       if (btnConsole) {
         btnConsole.addEventListener('click', () => {
+          resetViews();
           consoleSection.classList.remove('hidden');
-          guideSection.classList.add('hidden');
           btnConsole.classList.add('active');
-          if(btnGuide) btnGuide.classList.remove('active');
-          if(appShell) appShell.scrollIntoView({ behavior: 'smooth' });
         });
       }
 
       if (btnGuide) {
         btnGuide.addEventListener('click', () => {
-          consoleSection.classList.add('hidden');
+          resetViews();
           guideSection.classList.remove('hidden');
           btnGuide.classList.add('active');
-          if(btnConsole) btnConsole.classList.remove('active');
-          if(appShell) appShell.scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+      
+      // NUOVO LISTENER PER DATABASE
+      if (btnDatabase) {
+        btnDatabase.addEventListener('click', () => {
+          resetViews();
+          if(databaseSection) databaseSection.classList.remove('hidden');
+          btnDatabase.classList.add('active');
+          // Focus automatico sulla barra di ricerca
+          setTimeout(() => {
+             const input = document.getElementById('dbSearchInput');
+             if(input) input.focus();
+          }, 100);
         });
       }
 
