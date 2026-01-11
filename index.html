@@ -334,15 +334,15 @@
      </div><!-- Dark Overlay for Text Readability -->
      <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10, 15, 26, 0.4) 0%, rgba(10, 15, 26, 0.75) 50%, rgba(15, 23, 42, 0.95) 100%);"></div>
     </div><!-- Hero Content -->
-   <div id="heroContent" style="position: relative; z-index: 10; height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: center; padding: 0 4rem; will-change: opacity, transform;">
+    <div id="heroContent" class="px-6 lg:px-16" style="position: relative; z-index: 10; height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: center; will-change: opacity, transform;">
       
       <div class="max-w-8xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         
         <div style="text-align: left;">
           <h1 style="
             font-family: 'Sora', sans-serif; 
-            /* MODIFICA QUI: Aumentata la dimensione del font */
-            font-size: clamp(4rem, 9vw, 8.5rem); 
+            /* MODIFICA FONT: clamp parte da 2.5rem (mobile) invece di 4rem. Su PC usa 9vw quindi resta GRANDE uguale */
+            font-size: clamp(2.5rem, 9vw, 8.5rem); 
             font-weight: 900; 
             color: #ffffff; 
             line-height: 0.95; 
@@ -374,13 +374,14 @@
             alt="FMI Logo"
             style="
               width: 100%;
-              /* MODIFICA QUI: Ridotta la dimensione massima a 320px (intorno ai 300 richiesti) */
-              max-width: 320px;      
+              /* MODIFICA IMMAGINE: Max width 200px su mobile, 320px su PC (lg) */
+              max-width: 100%;      
               height: auto;
               object-fit: contain;
               filter: drop-shadow(0 30px 80px rgba(34, 211, 238, 0.3));
               transform: translateZ(0);
             "
+            class="max-w-[200px] lg:max-w-[320px]"
           />
         </div>
 
