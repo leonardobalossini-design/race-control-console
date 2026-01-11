@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="it">
  <head>
@@ -369,20 +370,20 @@
         </div>
 
         <div class="flex justify-center lg:justify-end mt-8 lg:mt-0">
-          <img
-            src="https://drive.google.com/thumbnail?id=1nYtzEPopS0EkIK158MDFwUKxQKfmRuuq&sz=w1000"
-            alt="FMI Logo"
-            style="
-              width: 100%;
-              /* MODIFICA IMMAGINE: Max width 200px su mobile, 320px su PC (lg) */
-              max-width: 100%;      
-              height: auto;
-              object-fit: contain;
-              filter: drop-shadow(0 30px 80px rgba(34, 211, 238, 0.3));
-              transform: translateZ(0);
-            "
-            class="max-w-[200px] lg:max-w-[320px]"
-          />
+          <img 
+           src="https://drive.google.com/thumbnail?id=1nYtzEPopS0EkIK158MDFwUKxQKfmRuuq&sz=w1000" 
+           alt="FMI Logo" 
+           style="
+             width: 100%;
+             /* Rimuoviamo max-width dallo style inline perché lo gestiamo con le classi */
+             height: auto;
+             object-fit: contain;
+             filter: drop-shadow(0 30px 80px rgba(34, 211, 238, 0.3));
+             transform: translateZ(0);
+           "
+           /* QUI STA LA MAGIA: 80px su mobile, 180px su PC (lg) */
+           class="max-w-[80px] lg:max-w-[180px]" 
+         />
         </div>
 
       </div>
