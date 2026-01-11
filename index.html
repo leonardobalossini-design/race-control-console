@@ -901,49 +901,51 @@ function triggerAIReport() {
         </section>
 
         <section class="rounded-2xl p-8 shadow-2xl border" style="background: #0F172A; border-color: #334155;">
-          <h3 class="text-2xl font-bold mb-6 pb-4 border-b" style="font-family: 'Sora', sans-serif; color: #22D3EE; border-color: #1e293b;">3. EVENT (Dati Sessione)</h3>
+          <div class="flex items-center justify-between border-b pb-4 mb-6" style="border-color: #1e293b;">
+             <h3 class="text-2xl font-bold" style="font-family: 'Sora', sans-serif; color: #22D3EE;">3. GESTIONE EVENTO</h3>
+             <span class="px-3 py-1 rounded text-xs font-bold bg-cyan-900 text-cyan-200 border border-cyan-700">STEP 1</span>
+          </div>
+
+          <div class="mb-8 p-4 rounded-xl border border-dashed border-slate-600 bg-slate-900/50">
+            <div class="flex items-start gap-4">
+               <button class="px-4 py-2 text-white font-bold rounded shadow-lg text-sm whitespace-nowrap" style="background: #22D3EE; color: #0F172A;">
+                 + New Event
+               </button>
+               <div>
+                 <h4 class="text-white font-bold mb-1">Inizializzazione Sessione</h4>
+                 <p class="text-slate-400 text-sm leading-relaxed">
+                   Prima di inserire qualsiasi incidente, è <strong>obbligatorio</strong> inizializzare l'evento. 
+                   Questo tasto apre un modulo che:
+                 </p>
+                 <ul class="list-disc list-inside text-sm text-slate-400 mt-2 space-y-1">
+                   <li>Pulisce la console dai dati precedenti.</li>
+                   <li>Genera o registra l'<strong>Event ID</strong> univoco (chiave primaria del database).</li>
+                   <li>Crea la "Riga Zero" nel foglio di calcolo per permettere all'AI di collegare i dati successivi.</li>
+                 </ul>
+               </div>
+            </div>
+          </div>
+
           <div class="grid grid-cols-1 gap-8">
-            
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 border-b pb-6 last:border-0 last:pb-0" style="border-color: rgba(30, 41, 59, 0.5);">
               <div class="font-mono font-semibold" style="color: #67e8f9;">event_id</div>
               <div class="md:col-span-3 text-slate-300">
-                <p class="mb-2"> Identificatore univoco e immutabile dell’evento, utilizzato per collegare in modo coerente evento, incidenti e decisioni (esempio: CIV25-R01-MISANO-GARA1).</p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 border-b pb-6 last:border-0 last:pb-0" style="border-color: rgba(30, 41, 59, 0.5);">
-              <div class="font-mono font-semibold" style="color: #67e8f9;">series / season</div>
-              <div class="md:col-span-3 text-slate-300">
-                <p>Campionato (es. CIV, MotoGP) e Anno (es. 2025). Fondamentale per le statistiche incrociate.</p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 border-b pb-6 last:border-0 last:pb-0" style="border-color: rgba(30, 41, 59, 0.5);">
-              <div class="font-mono font-semibold" style="color: #67e8f9;">event_name</div>
-              <div class="md:col-span-3 text-slate-300">
-                <p class="mb-2">Nome descrittivo completo.</p>
-                <div class="p-2 rounded border-l-2 text-xs font-mono" style="background: #020617; border-color: #22c55e; color: #94a3b8;">
-                  CORRETTO: "CIV 2025 — Round 3 — Vallelunga"
-                </div>
+                <p class="mb-2"> Identificatore univoco (es: <span class="font-mono bg-slate-800 px-1 rounded">CIV25-R01-MISANO-GARA1</span>). Una volta creato, non modificarlo: collega tutti gli incidenti a questa sessione.</p>
               </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 border-b pb-6 last:border-0 last:pb-0" style="border-color: rgba(30, 41, 59, 0.5);">
               <div class="font-mono font-semibold" style="color: #67e8f9;">track_status</div>
               <div class="md:col-span-3 text-slate-300">
-                <p class="mb-2">Definizione precisa dello stato pista:</p>
+                <p class="mb-2">Stato dichiarato della pista (influenza le decisioni sui contatti):</p>
                 <ul class="grid grid-cols-2 gap-2 text-sm">
-                  <li><span class="text-white font-semibold">Asciutto:</span> 0% umidità</li>
-                  <li><span class="text-white font-semibold">Umido:</span> Chiazze localizzate</li>
-                  <li><span class="text-white font-semibold">Bagnato:</span> Pista wet</li>
-                  <li><span class="text-white font-semibold">Misto:</span> Condizioni variabili</li>
+                  <li><span class="text-white font-semibold">Asciutto:</span> Grip ottimale</li>
+                  <li><span class="text-white font-semibold">Bagnato:</span> Wet Race (regole diverse)</li>
                 </ul>
               </div>
             </div>
-
           </div>
         </section>
-
         <section class="rounded-2xl p-8 shadow-2xl border" style="background: #0F172A; border-color: #334155;">
           <h3 class="text-2xl font-bold mb-6 pb-4 border-b" style="font-family: 'Sora', sans-serif; color: #facc15; border-color: #1e293b;">4. INCIDENTS (Fatti Osservabili)</h3>
           <p class="text-slate-400 mb-6 italic">Un incidente è un fatto, non una valutazione.</p>
