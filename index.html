@@ -2411,6 +2411,116 @@ function initSidebarToggle() {
     toggle.setAttribute('aria-expanded', String(!isNowCollapsed));
   });
 }
+   // ==========================================
+// LOGICA DATABASE & RICERCA (NUOVA)
+// ==========================================
+
+const dbForm = document.getElementById('searchDbForm');
+if(dbForm) {
+    dbForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const query = document.getElementById('dbSearchInput').value;
+      performDatabaseSearch(query);
+    });
+}
+
+function performDatabaseSearch(query) {
+  const tbody = document.getElementById('dbResultsBody');
+  // Spinner di caricamento
+  tbody.innerHTML = `
+    <tr>
+      <td colspan="5" class="px-6 py-20 text-center">
+        <div class="loading-spinner mx-auto mb-4" style="width: 40px; height: 40px; border-width: 4px;"></div>
+        <span class="text-slate-300 font-bold animate-pulse">Ricerca negli archivi federali...</span>
+      </td>
+    </tr>`;
+
+  // Chiamata al Server (Google Apps Script)
+  google.script.run
+    .withSuccessHandler(function(response) {
+      if (response.success) {
+        renderDbResults(response.data);
+      } else {
+        showToast('Errore ricerca: ' + response.error, 'error');
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-10 text-red-400">Errore: ${response.error}</td></tr>`;
+      }
+    })
+    .withFailureHandler(function(err) {
+      console.error(err);
+      tbody.innerHTML = `<tr><td colspan="5" class="text-center py-10 text-red-400">Errore di connessione.</td></tr>`;
+    })
+    .searchHistoryDatabase(query); 
+}
+
+function renderDbResults(rows) {
+  const tbody = document.getElementById('dbResultsBody');
+  tbody.innerHTML = '';
+
+  if (!rows || rows.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" class="px-6 py-12 text-center text-slate-500">
+          Nessun risultato trovato per la ricerca.
+        </td>
+      </tr>`;
+    return;
+  }
+
+  // Ciclo sui risultati e creo le righe della tabella
+  rows.forEach(row => {
+    // MAPPATURA INDICI (Adattata al tuo foglio decision_history)
+    // 0:EventID, 1:IncID, 2:Taxonomy, 3:Desc, 4:Riders, 5:Reaction, 6:Type, 7:Basis
+    const eventId = row[0] || '';
+    const incidentId = row[1] || '';
+    const taxonomy = row[2] || '';
+    const desc = row[3] || '';
+    const riders = row[4] || ''; 
+    const reaction = row[5] || 'PENDING';
+    const regBasis = row[7] || ''; // A volte è row[6], dipende dal foglio, controlla se vedi i dati giusti
+
+    // Stile dinamico per la decisione (Badge colorati)
+    let badgeStyle = "bg-slate-800 text-slate-400 border-slate-600"; 
+    const rUpper = String(reaction).toUpperCase();
+    
+    if (rUpper.includes('PENALTY') || rUpper.includes('DISQUALIFICATION') || rUpper.includes('START') || rUpper.includes('DROP')) {
+      badgeStyle = "bg-red-900/40 text-red-300 border-red-700"; // Rosso
+    } else if (rUpper.includes('WARNING')) {
+      badgeStyle = "bg-yellow-900/40 text-yellow-300 border-yellow-700"; // Giallo
+    } else if (rUpper.includes('NO') || rUpper.includes('ACTION')) {
+      badgeStyle = "bg-emerald-900/40 text-emerald-300 border-emerald-700"; // Verde
+    }
+
+    const tr = document.createElement('tr');
+    tr.className = "hover:bg-slate-800/60 transition-colors border-b border-slate-800/50 last:border-0 group";
+    
+    tr.innerHTML = `
+      <td class="px-6 py-4">
+        <div class="font-bold text-white text-xs font-mono">${eventId}</div>
+        <div class="text-[10px] text-slate-500 mt-1">${incidentId}</div>
+      </td>
+      <td class="px-6 py-4">
+        <div class="text-white font-bold mb-1">${riders}</div>
+        <div class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 border border-slate-700 text-cyan-400 uppercase tracking-wide">
+          ${taxonomy}
+        </div>
+      </td>
+      <td class="px-6 py-4">
+        <div class="text-sm text-slate-300 line-clamp-2 group-hover:line-clamp-none transition-all duration-300" title="${desc}">
+          ${desc}
+        </div>
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap">
+        <span class="px-3 py-1.5 rounded-lg text-xs font-bold border uppercase shadow-sm ${badgeStyle}">
+          ${reaction}
+        </span>
+      </td>
+      <td class="px-6 py-4 text-xs font-mono text-slate-500 w-32 truncate" title="${regBasis}">
+        ${regBasis}
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
     // Run on page load
     window.addEventListener('DOMContentLoaded', init);
   </script>
